@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "407432915878",
+    "project_id": "popcorn-a67e4",
+    "storage_bucket": "popcorn-a67e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407432915878:android:3269576be465584ca97d67",
+        "android_client_info": {
+          "package_name": "com.example.popcorn_v2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "407432915878-2o5bsr3lsnlkafh2673rvoos7fat1aml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDJwojkM6PLXLn4kFqc36YHoOrz_Dvg9s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "407432915878-2o5bsr3lsnlkafh2673rvoos7fat1aml.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "407432915878-ktn6h1ml6afl2tt0put90enko1ro12ha.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tamnada.popcorn"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
