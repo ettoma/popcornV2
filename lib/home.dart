@@ -30,47 +30,53 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('popcorn 🍿'),
+        backgroundColor: Colors.grey[400],
       ),
-      body: Center(
-          child: Column(
-        children: [
-          SearchBar(
-            trailing: const [Icon(Icons.search_outlined)],
-            elevation: MaterialStateProperty.all(1),
-            padding: MaterialStateProperty.all(
-                const EdgeInsets.symmetric(horizontal: 20)),
-            hintText: 'look for a movie',
-            controller: _searchController,
-            onChanged: (value) {
-              if (_searchController.text.length > 3) {
-                fetchMoviesFromKeyword(_searchController.text);
-              }
-              if (_searchController.text.isEmpty) {
-                setState(() {
-                  fetchedMovies.clear();
-                });
-              }
-            },
-          ),
-          Container(
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20))),
-            height: 500,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: fetchedMovies.length,
-              itemBuilder: (context, index) {
-                var movie = fetchedMovies[index];
-
-                return MovieTile(
-                    title: movie.title,
-                    voteAverage: movie.voteAverage ?? 0,
-                    posterPath: movie.posterPath ?? '');
+      body: Padding(
+        padding: const EdgeInsets.all(25),
+        child: Center(
+            child: Column(
+          children: [
+            SearchBar(
+              trailing: const [Icon(Icons.search_outlined)],
+              backgroundColor: MaterialStateProperty.all(Colors.grey[200]),
+              elevation: MaterialStateProperty.all(0),
+              padding: MaterialStateProperty.all(
+                  const EdgeInsets.symmetric(horizontal: 20)),
+              hintText: 'look for a movie',
+              controller: _searchController,
+              onChanged: (value) {
+                if (_searchController.text.length > 3) {
+                  fetchMoviesFromKeyword(_searchController.text);
+                }
+                if (_searchController.text.isEmpty) {
+                  setState(() {
+                    fetchedMovies.clear();
+                  });
+                }
               },
             ),
-          )
-        ],
-      )),
+            Container(
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              height: 500,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: fetchedMovies.length,
+                itemBuilder: (context, index) {
+                  var movie = fetchedMovies[index];
+
+                  return MovieTile(
+                      id: movie.id,
+                      title: movie.title,
+                      voteAverage: movie.voteAverage ?? 0,
+                      posterPath: movie.posterPath ?? '');
+                },
+              ),
+            )
+          ],
+        )),
+      ),
     );
   }
 }

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../movie_page.dart';
+
 class MovieTile extends StatelessWidget {
   const MovieTile(
       {super.key,
       required this.title,
       required this.voteAverage,
-      this.posterPath});
+      this.posterPath,
+      required this.id});
 
+  final int id;
   final String title;
   final double voteAverage;
   final String? posterPath;
@@ -18,13 +22,17 @@ class MovieTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      splashRadius: 10,
-      splashColor: Colors.amberAccent,
-      onPressed: () {
-        print("click");
+    void navigateToMoviePage(String movieID) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => MoviePage(movieID: movieID),
+      ));
+    }
+
+    return GestureDetector(
+      onTap: () {
+        navigateToMoviePage(id.toString());
       },
-      icon: Container(
+      child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         width: 250,
         color: Colors.blueAccent,
