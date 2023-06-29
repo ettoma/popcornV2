@@ -1,18 +1,20 @@
 buildscript {
+ 
     ext.kotlin_version = '1.7.10'
     repositories {
         google()
         mavenCentral()
     }
+    // defaultConfig { minSdkVersion localProperties.getProperty('flutter.minSdkVersion').toInteger() }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:7.3.0'
         // START: FlutterFire Configuration
-        classpath 'com.google.gms:google-services:4.3.10'
+        classpath 'com.google.gms:google-services:4.3.14'
         // END: FlutterFire Configuration
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
-}
+}  
 
 allprojects {
     repositories {
@@ -31,4 +33,4 @@ subprojects {
 
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
-}
+} 

@@ -24,18 +24,30 @@ class MovieFull {
   final String title;
   final String? posterPath;
   final double? voteAverage;
+  final String? overview;
+  final String? releaseDate;
+  final int? voteCount;
+  final String? backdropPath;
 
   MovieFull(
       {required this.id,
       required this.title,
       this.posterPath,
-      required this.voteAverage});
+      required this.voteAverage,
+      this.overview,
+      this.releaseDate,
+      this.voteCount,
+      this.backdropPath});
 
   factory MovieFull.fromJson(Map<String, dynamic> json) {
     return MovieFull(
         id: json['id'],
         title: json['title'],
         posterPath: json['poster_path'],
-        voteAverage: json['vote_average']);
+        voteAverage: json['vote_average'],
+        overview: json['overview'],
+        releaseDate: json['release_date'],
+        voteCount: json['vote_count'],
+        backdropPath: json['backdrop_path']);
   }
 }
