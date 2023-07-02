@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:popcorn_v2/api/api.dart';
+import 'package:popcorn_v2/components/app_bar.dart';
 
 import 'api/models.dart';
 
@@ -13,14 +14,14 @@ class MoviePage extends StatefulWidget {
 }
 
 class _MoviePageState extends State<MoviePage> {
-  Future<MovieFull> fetchMovieData(String id) async {
+  Future<Movie> fetchMovieData(String id) async {
     var movieData = await API().getMovieFromID(id);
     return movieData;
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<MovieFull>(
+    return FutureBuilder<Movie>(
       future: fetchMovieData(widget.movieID),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -33,39 +34,58 @@ class _MoviePageState extends State<MoviePage> {
           // Display the fetched data
           final data = snapshot.data!;
           return Scaffold(
+            floatingActionButton: FloatingActionButton.small(
+              onPressed: () {},
+              child: const Icon(Icons.add),
+            ),
+            appBar: MyAppBar(title: data.title),
             body: SafeArea(
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.fitWidth,
-                    image: NetworkImage(
-                      'https://image.tmdb.org/t/p/w500${data.posterPath}',
-                    ),
-                  ),
-                ),
+              child: SingleChildScrollView(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 child: Column(
                   children: [
-                    const SizedBox(
-                      height: 400,
-                    ),
                     Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      margin: const EdgeInsets.all(20),
-                      padding: const EdgeInsets.all(25),
-                      height: 200,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('ID: ${data.id}'),
-                          Text('Name: ${data.title}'),
-                          Text('Vote Avg: ${data.voteAverage}'),
-                          Text('Vote Count: ${data.voteCount}'),
-                          Text('Overview: ${data.overview}')
-                        ],
-                      ),
+                      height: 500,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          image: data.posterPath!.isNotEmpty
+                              ? DecorationImage(
+                                  image: NetworkImage(
+                                      'https://image.tmdb.org/t/p/w500${data.posterPath}'),
+                                  fit: BoxFit.fill)
+                              : const DecorationImage(
+                                  image: AssetImage("assets/no-results.png"),
+                                  scale: 5)),
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 58, 44, 99),
+                              borderRadius: BorderRadius.circular(8)),
+                          margin: const EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(25),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              data.releaseDate != ''
+                                  ? Text(
+                                      'Year: ${data.releaseDate?.substring(0, 4)}',
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    )
+                                  : const Text('Year: n/a',
+                                      style: TextStyle(color: Colors.white)),
+                              Text(
+                                  'Vote Avg: ${data.voteAverage} (${data.voteCount})',
+                                  style: const TextStyle(color: Colors.white)),
+                              Text('Overview: ${data.overview}',
+                                  style: const TextStyle(color: Colors.white))
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

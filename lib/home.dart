@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:popcorn_v2/api/api.dart';
-import 'package:popcorn_v2/components/movieTileComponent.dart';
+import 'package:popcorn_v2/components/app_bar.dart';
+import 'package:popcorn_v2/components/movie_tile.dart';
 
 import 'api/models.dart';
 
@@ -28,10 +29,7 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('popcorn 🍿'),
-        backgroundColor: Colors.grey[400],
-      ),
+      appBar: const MyAppBar(title: 'popcorn 🍿'),
       body: Padding(
         padding: const EdgeInsets.all(25),
         child: Center(
@@ -39,8 +37,15 @@ class _HomepageState extends State<Homepage> {
           children: [
             SearchBar(
               trailing: const [Icon(Icons.search_outlined)],
-              backgroundColor: MaterialStateProperty.all(Colors.grey[200]),
-              elevation: MaterialStateProperty.all(0),
+              textStyle: MaterialStateProperty.all(const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18)),
+              hintStyle:
+                  MaterialStateProperty.all(TextStyle(color: Colors.grey[400])),
+              backgroundColor: MaterialStateProperty.all(
+                  const Color.fromRGBO(212, 173, 252, 0.5)),
+              elevation: MaterialStateProperty.all(2),
               padding: MaterialStateProperty.all(
                   const EdgeInsets.symmetric(horizontal: 20)),
               hintText: 'look for a movie',
@@ -56,10 +61,8 @@ class _HomepageState extends State<Homepage> {
                 }
               },
             ),
-            Container(
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              height: 500,
+            SizedBox(
+              height: 450,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: fetchedMovies.length,
@@ -69,7 +72,7 @@ class _HomepageState extends State<Homepage> {
                   return MovieTile(
                       id: movie.id,
                       title: movie.title,
-                      voteAverage: movie.voteAverage ?? 0,
+                      voteAverage: movie.voteAverage!,
                       posterPath: movie.posterPath ?? '');
                 },
               ),

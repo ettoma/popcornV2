@@ -1,35 +1,35 @@
+// class Movie {
+//   final int id;
+//   final String title;
+//   final String? posterPath;
+//   final num? voteAverage;
+
+//   Movie(
+//       {required this.id,
+//       required this.title,
+//       this.posterPath,
+//       this.voteAverage});
+
+//   factory Movie.fromJson(Map<String, dynamic> json) {
+//     return Movie(
+//         id: json['id'],
+//         title: json['title'],
+//         posterPath: json['poster_path'],
+//         voteAverage: json['vote_average']);
+//   }
+// }
+
 class Movie {
   final int id;
   final String title;
   final String? posterPath;
-  final double? voteAverage;
-
-  Movie(
-      {required this.id,
-      required this.title,
-      this.posterPath,
-      required this.voteAverage});
-
-  factory Movie.fromJson(Map<String, dynamic> json) {
-    return Movie(
-        id: json['id'],
-        title: json['title'],
-        posterPath: json['poster_path'],
-        voteAverage: json['vote_average']);
-  }
-}
-
-class MovieFull {
-  final int id;
-  final String title;
-  final String? posterPath;
-  final double? voteAverage;
+  num? voteAverage;
   final String? overview;
   final String? releaseDate;
   final int? voteCount;
   final String? backdropPath;
 
-  MovieFull(
+  Movie(
       {required this.id,
       required this.title,
       this.posterPath,
@@ -39,8 +39,8 @@ class MovieFull {
       this.voteCount,
       this.backdropPath});
 
-  factory MovieFull.fromJson(Map<String, dynamic> json) {
-    return MovieFull(
+  factory Movie.fromJson(Map<String, dynamic> json) {
+    return Movie(
         id: json['id'],
         title: json['title'],
         posterPath: json['poster_path'],

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:popcorn_v2/home.dart';
+import 'package:popcorn_v2/profile_page.dart';
 
 import 'firebase/firebase_options.dart';
 
@@ -22,10 +23,13 @@ class App extends StatelessWidget {
       title: 'Popcorn',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.blueGrey, background: Colors.grey[300]),
+          seedColor: const Color.fromRGBO(12, 19, 79, 1),
+          background: const Color.fromRGBO(29, 38, 125, 1),
+        ),
         useMaterial3: true,
       ),
       home: const Homepage(),
+      // home: ProfilePage(),
     );
   }
 }
