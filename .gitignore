@@ -33,6 +33,8 @@ migrate_working_dir/
 .pub/
 /build/
 
+service_account_key.json
+*.env
 # Symbolication related
 app.*.symbols
 
