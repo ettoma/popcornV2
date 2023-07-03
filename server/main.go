@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/ettoma/popcorn_v2/firebase"
+	firestoreDB "github.com/ettoma/popcorn_v2/firestore_db"
 	"github.com/ettoma/popcorn_v2/handles"
 	"github.com/ettoma/popcorn_v2/middlewares"
 	"github.com/gorilla/mux"
@@ -21,10 +21,10 @@ func main() {
 	}
 
 	//* initialise Firestore database
-	isInitialised, client := firebase.InitialiseFirestore()
+	isInitialised, client := firestoreDB.InitialiseFirestore()
 
 	if isInitialised {
-		firebase.GetDocuments(client)
+		firestoreDB.GetDocuments(client)
 	}
 
 	//* initialise server
