@@ -64,4 +64,28 @@ class API {
       rethrow;
     }
   }
+
+  Future<List<WatchlistItem>> getWatchlistForUser(String user) async {
+    List<WatchlistItem> watchlist;
+
+    var apiUrl = 'http://127.0.0.1:8080/user/watchlist';
+
+    try {
+      var response = await http.post(Uri.parse(apiUrl),
+          body: jsonEncode(<String, String>{"username": "ettore-1234"}));
+
+      if (response.statusCode == 200) {
+        Iterable data = json.decode(response.body);
+
+        watchlist = List<WatchlistItem>.from(
+            data.map((e) => WatchlistItem.fromJson(e)));
+
+        return watchlist;
+      } else {
+        return List.empty();
+      }
+    } catch (error) {
+      rethrow;
+    }
+  }
 }

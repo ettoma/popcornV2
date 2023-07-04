@@ -3,6 +3,7 @@ package firestoreDB
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 
@@ -12,6 +13,23 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
+
+var ClientDB *firestore.Client
+
+func Initialise() error {
+
+	var isInitialised bool
+	//* initialise Firestore database
+	isInitialised, ClientDB = InitialiseFirestore()
+
+	if isInitialised == true {
+		log.Println("Firestore DB initalised")
+		return nil
+	}
+
+	return errors.New("Failed to initialise Firestore DB")
+
+}
 
 func InitialiseFirestore() (bool, *firestore.Client) {
 	ctx := context.Background()
@@ -31,9 +49,9 @@ func InitialiseFirestore() (bool, *firestore.Client) {
 	return true, client
 }
 
-func GetDocuments(client *firestore.Client) (*Watchlist, error) {
+func GetDocuments(client *firestore.Client, user string) (*Watchlist, error) {
 
-	doc := client.Doc("users/ettore-1234")
+	doc := client.Doc("users/" + user)
 	data, err := doc.Get(context.Background())
 
 	if status.Code(err) == codes.NotFound {
@@ -44,8 +62,10 @@ func GetDocuments(client *firestore.Client) (*Watchlist, error) {
 	var w *Watchlist
 
 	err = data.DataTo(&w)
-	fmt.Print(err)
-	fmt.Println(w.Watchlist)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
 
 	j, err := json.Marshal(w)
 
@@ -53,7 +73,6 @@ func GetDocuments(client *firestore.Client) (*Watchlist, error) {
 		fmt.Println(err)
 		return nil, err
 	}
-	fmt.Printf("%s", j)
 
 	var r *Watchlist
 	err = json.Unmarshal(j, &r)
@@ -61,7 +80,6 @@ func GetDocuments(client *firestore.Client) (*Watchlist, error) {
 		fmt.Println(err)
 		return nil, err
 	}
-	fmt.Println(r)
 
 	return w, nil
 

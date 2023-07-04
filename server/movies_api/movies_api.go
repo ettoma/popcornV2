@@ -70,8 +70,7 @@ func GetMoviesFromKeyword(query string) *models.QueryResults {
 	}
 
 	key := os.Getenv("MOVIEDB_API_KEY")
-	fmt.Print(key)
-	req.Header.Add("Authorization", os.Getenv("MOVIEDB_API_KEY"))
+	req.Header.Add("Authorization", key)
 
 	trace := &httptrace.ClientTrace{
 		// DNSDone: func(dnsInfo httptrace.DNSDoneInfo) {

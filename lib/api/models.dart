@@ -1,24 +1,3 @@
-// class Movie {
-//   final int id;
-//   final String title;
-//   final String? posterPath;
-//   final num? voteAverage;
-
-//   Movie(
-//       {required this.id,
-//       required this.title,
-//       this.posterPath,
-//       this.voteAverage});
-
-//   factory Movie.fromJson(Map<String, dynamic> json) {
-//     return Movie(
-//         id: json['id'],
-//         title: json['title'],
-//         posterPath: json['poster_path'],
-//         voteAverage: json['vote_average']);
-//   }
-// }
-
 class Movie {
   final int id;
   final String title;
@@ -51,3 +30,29 @@ class Movie {
         backdropPath: json['backdrop_path']);
   }
 }
+
+class WatchlistItem {
+  final int? id;
+  final num? userRating;
+  final bool? watched;
+
+  WatchlistItem({this.id, this.userRating, this.watched});
+
+  factory WatchlistItem.fromJson(Map<String, dynamic> json) {
+    return WatchlistItem(
+        id: json['movieID'],
+        userRating: json['userRating'],
+        watched: json['watched']);
+  }
+}
+
+// class Watchlist {
+//   List<WatchlistItem>? watchlist;
+
+//   Watchlist({this.watchlist});
+
+//   factory Watchlist.fromJson(List<Map<String, dynamic>> json) {
+//     return List
+//   }
+
+// }

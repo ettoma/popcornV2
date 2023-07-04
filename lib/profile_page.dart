@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:popcorn_v2/api/api.dart';
+import 'package:popcorn_v2/api/models.dart';
 import 'package:popcorn_v2/firebase/firestore.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -10,34 +12,38 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  Stream<QuerySnapshot> users = FirestoreAPI().getWatchlistForUser();
+  Future<List<WatchlistItem>> fetchWatchlist(String user) async {
+    var watchlist = await API().getWatchlistForUser("ettore-1234");
+
+    return watchlist;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: StreamBuilder<QuerySnapshot>(
-          stream: users,
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return const Text("error loading the data");
-            }
+        child: FutureBuilder<List<WatchlistItem>>(
+          future: fetchWatchlist("ettore-1234"),
+          builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Text("loading");
-            }
-            final data = snapshot.requireData;
-
-            return ListView(
-                children: data.docs.map((DocumentSnapshot document) {
-              Map<String, dynamic> data =
-                  document.data()! as Map<String, dynamic>;
-
-              return ListTile(
-                title: Text(data["watchlist"][0]["movieID"].toString()),
-                subtitle: Text(data["watchlist"][0]["watched"].toString()),
+              // Display a loading indicator while waiting for data
+              return const CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              // Display an error message if API call fails
+              return Text('Error: ${snapshot.error}');
+            } else if (snapshot.hasData) {
+              // Display the fetched data
+              final data = snapshot.data!;
+              return Scaffold(
+                body: Text(
+                  data.toString(),
+                  style: TextStyle(color: Colors.white),
+                ),
               );
-            }).toList());
+            } else {
+              // Handle other cases
+              return const Text('No data');
+            }
           },
         ),
       ),

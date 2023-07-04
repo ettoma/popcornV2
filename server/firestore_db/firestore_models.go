@@ -8,3 +8,7 @@ type WatchlistItem struct {
 	UserRating float32 `json:"userRating" firebase:"userRating"`
 	Watched    bool    `json:"watched" firebase:"watched"`
 }
+
+type User struct {
+	Username string `json:"username"`
+}
