@@ -18,17 +18,22 @@ func HandleGetUserWatchlist(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(user)
 
 	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
 		fmt.Print(err)
 	}
 
 	watchlist, err = firestoreDB.GetDocuments(firestoreDB.ClientDB, user.Username)
 
 	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
 		fmt.Println(err)
 	}
 
-	w.WriteHeader(http.StatusOK)
-	w.Header().Add("Content-Type", "application/json")
+	if err == nil {
+		w.WriteHeader(http.StatusOK)
+		w.Header().Add("Content-Type", "application/json")
 
-	json.NewEncoder(w).Encode(watchlist)
+		json.NewEncoder(w).Encode(watchlist)
+	}
+
 }

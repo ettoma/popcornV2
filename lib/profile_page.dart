@@ -13,9 +13,14 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   Future<List<WatchlistItem>> fetchWatchlist(String user) async {
-    var watchlist = await API().getWatchlistForUser("ettore-1234");
+    var watchlist = await API().getWatchlistForUser(user);
 
     return watchlist;
+  }
+
+  Future<Movie> fetchMovieData(String id) async {
+    var movieData = await API().getMovieFromID(id);
+    return movieData;
   }
 
   @override
@@ -34,12 +39,31 @@ class _ProfilePageState extends State<ProfilePage> {
             } else if (snapshot.hasData) {
               // Display the fetched data
               final data = snapshot.data!;
-              return Scaffold(
-                body: Text(
-                  data.toString(),
-                  style: TextStyle(color: Colors.white),
-                ),
-              );
+              return ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return FutureBuilder(
+                        future: fetchMovieData(data[index].movieID.toString()),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            // Display a loading indicator while waiting for data
+                            return const CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            // Display an error message if API call fails
+                            return Text('Error: ${snapshot.error}');
+                          } else if (snapshot.hasData) {
+                            // Display the fetched data
+                            final data = snapshot.data!;
+                            return ListTile(
+                              title: Text(data.title),
+                              subtitle: Text(data.voteAverage.toString()),
+                            );
+                          } else {
+                            return const Text('No data');
+                          }
+                        });
+                  });
             } else {
               // Handle other cases
               return const Text('No data');

@@ -72,16 +72,20 @@ class API {
 
     try {
       var response = await http.post(Uri.parse(apiUrl),
-          body: jsonEncode(<String, String>{"username": "ettore-1234"}));
+          body: jsonEncode(<String, String>{"username": user}));
 
       if (response.statusCode == 200) {
-        Iterable data = json.decode(response.body);
+        var data = json.decode(response.body);
 
         watchlist = List<WatchlistItem>.from(
-            data.map((e) => WatchlistItem.fromJson(e)));
+            data["watchlist"].map((e) => WatchlistItem.fromJson(e)));
 
         return watchlist;
+      } else if (response.statusCode == 404) {
+        print(response.statusCode);
+        return List.empty();
       } else {
+        print(response.statusCode);
         return List.empty();
       }
     } catch (error) {
