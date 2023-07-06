@@ -16,7 +16,10 @@ class _MyAppBarState extends State<MyAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(widget.title),
+      title: Text(
+        widget.title,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
       backgroundColor: const Color.fromRGBO(12, 19, 79, 1),
       foregroundColor: Colors.white,
     );

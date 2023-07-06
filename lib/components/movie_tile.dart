@@ -59,9 +59,10 @@ class MovieTile extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: const Color.fromRGBO(92, 70, 156, 1),
-                    ),
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white10
+                        // color: const Color.fromRGBO(92, 70, 156, 1),
+                        ),
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     width: containerWidth,
                     height: 80,
@@ -83,9 +84,9 @@ class MovieTile extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 5),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: const Color.fromRGBO(212, 173, 252, 0.5),
-                          ),
+                              borderRadius: BorderRadius.circular(10),
+                              // color: const Color.fromRGBO(212, 173, 252, 0.5),
+                              color: Colors.white24),
                           child: Text(
                             '⭐️ ${formatVoteAvg(voteAverage)}',
                             style: const TextStyle(

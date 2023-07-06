@@ -43,9 +43,9 @@ class _HomepageState extends State<Homepage> {
                   fontSize: 18)),
               hintStyle:
                   MaterialStateProperty.all(TextStyle(color: Colors.grey[400])),
-              backgroundColor: MaterialStateProperty.all(
-                  const Color.fromRGBO(212, 173, 252, 0.5)),
-              elevation: MaterialStateProperty.all(2),
+              backgroundColor: MaterialStateProperty.all(Colors.white10),
+              // const Color.fromRGBO(212, 173, 252, 0.5)),
+              elevation: MaterialStateProperty.all(0),
               padding: MaterialStateProperty.all(
                   const EdgeInsets.symmetric(horizontal: 20)),
               hintText: 'look for a movie',
@@ -79,6 +79,15 @@ class _HomepageState extends State<Homepage> {
             )
           ],
         )),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (value) {
+          print(value);
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.abc), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.ac_unit), label: "Watchlist")
+        ],
       ),
     );
   }

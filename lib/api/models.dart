@@ -45,14 +45,3 @@ class WatchlistItem {
         watched: json['watched']);
   }
 }
-
-// class Watchlist {
-//   List<WatchlistItem>? watchlist;
-
-//   Watchlist({this.watchlist});
-
-//   factory Watchlist.fromJson(List<Map<String, dynamic>> json) {
-//     return List
-//   }
-
-// }

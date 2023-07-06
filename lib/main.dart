@@ -28,8 +28,8 @@ class App extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      // home: const Homepage(),
-      home: ProfilePage(),
+      home: const Homepage(),
+      // home: ProfilePage(),
     );
   }
 }
