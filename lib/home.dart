@@ -80,15 +80,6 @@ class _HomepageState extends State<Homepage> {
           ],
         )),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (value) {
-          print(value);
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.abc), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.ac_unit), label: "Watchlist")
-        ],
-      ),
     );
   }
 }

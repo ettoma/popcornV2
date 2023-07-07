@@ -60,9 +60,7 @@ class MovieTile extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: Colors.white10
-                        // color: const Color.fromRGBO(92, 70, 156, 1),
-                        ),
+                        color: Colors.white10),
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     width: containerWidth,
                     height: 80,

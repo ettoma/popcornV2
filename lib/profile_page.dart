@@ -1,11 +1,9 @@
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:popcorn_v2/api/api.dart';
 import 'package:popcorn_v2/api/models.dart';
 import 'package:popcorn_v2/components/app_bar.dart';
-import 'package:popcorn_v2/firebase/firestore.dart';
 
 import 'movie_page.dart';
 

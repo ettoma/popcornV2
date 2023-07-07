@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:popcorn_v2/home.dart';
-import 'package:popcorn_v2/profile_page.dart';
+import 'package:popcorn_v2/page_switch.dart';
 
 import 'firebase/firebase_options.dart';
 
@@ -28,8 +27,7 @@ class App extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const Homepage(),
-      // home: ProfilePage(),
+      home: PageSwitch(),
     );
   }
 }
