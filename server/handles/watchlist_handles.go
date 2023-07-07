@@ -37,3 +37,30 @@ func HandleGetUserWatchlist(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
+
+func HandleAddMovieToWatchlist(w http.ResponseWriter, r *http.Request) {
+	var movieToAdd *firestoreDB.MovieToAdd
+
+	r.Body = http.MaxBytesReader(w, r.Body, 1048576)
+
+	err := json.NewDecoder(r.Body).Decode(&movieToAdd)
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Print(err)
+	}
+
+	err = firestoreDB.AddMovieToWatchlist(firestoreDB.ClientDB, movieToAdd.MovieID, movieToAdd.Username)
+
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Println(err)
+	}
+
+	if err == nil {
+		w.WriteHeader(http.StatusOK)
+		w.Header().Add("Content-Type", "application/json")
+
+		json.NewEncoder(w).Encode(movieToAdd)
+	}
+}

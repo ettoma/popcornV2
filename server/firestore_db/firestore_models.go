@@ -12,3 +12,8 @@ type WatchlistItem struct {
 type User struct {
 	Username string `json:"username"`
 }
+
+type MovieToAdd struct {
+	Username string `json:"username"`
+	MovieID  int    `json:"movieID"`
+}
