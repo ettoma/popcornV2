@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/ettoma/popcorn_v2/models"
+	"github.com/ettoma/popcorn_v2/utils"
 )
 
 var BASE_URL = "https://api.themoviedb.org/3"
@@ -38,19 +39,19 @@ func GetMovieFromId(id string) *models.MovieDetails {
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		fmt.Print(err)
+		utils.HandleError(err)
 	}
 
 	defer res.Body.Close()
 
 	resBody, err := io.ReadAll(res.Body)
 	if err != nil {
-		fmt.Print(err)
+		utils.HandleError(err)
 	}
 
 	err = json.Unmarshal(resBody, &response)
 	if err != nil {
-		fmt.Print(err)
+		utils.HandleError(err)
 	}
 
 	return response

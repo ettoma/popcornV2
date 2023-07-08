@@ -1,10 +1,10 @@
 package handles
 
 import (
-	"encoding/json"
 	"net/http"
 
 	moviesapi "github.com/ettoma/popcorn_v2/movies_api"
+	"github.com/ettoma/popcorn_v2/utils"
 	"github.com/gorilla/mux"
 )
 
@@ -14,10 +14,7 @@ func HandleGetMoviesFromKeyword(w http.ResponseWriter, r *http.Request) {
 
 	movie := moviesapi.GetMoviesFromKeyword(query)
 
-	w.WriteHeader(http.StatusOK)
-	w.Header().Add("Content-Type", "application/json")
-
-	json.NewEncoder(w).Encode(movie)
+	utils.WriteResponse(w, movie, true, http.StatusOK)
 
 }
 
@@ -27,9 +24,6 @@ func HandleGetMovieFromId(w http.ResponseWriter, r *http.Request) {
 
 	movie := moviesapi.GetMovieFromId(query)
 
-	w.WriteHeader(http.StatusOK)
-	w.Header().Add("Content-Type", "application/json")
-
-	json.NewEncoder(w).Encode(movie)
+	utils.WriteResponse(w, movie, true, http.StatusOK)
 
 }

@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	firestoreDB "github.com/ettoma/popcorn_v2/firestore_db"
+	"github.com/ettoma/popcorn_v2/utils"
 )
 
 func HandleGetUserWatchlist(w http.ResponseWriter, r *http.Request) {
@@ -15,25 +16,23 @@ func HandleGetUserWatchlist(w http.ResponseWriter, r *http.Request) {
 	r.Body = http.MaxBytesReader(w, r.Body, 1048576)
 
 	err := json.NewDecoder(r.Body).Decode(&user)
-	fmt.Println(user)
 
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Print(err)
+		utils.WriteResponse(w, "Request is malformed", false, http.StatusBadRequest)
 	}
 
 	watchlist, err = firestoreDB.GetDocuments(firestoreDB.ClientDB, user.Username)
 
 	if err != nil {
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Println(err)
+		utils.WriteResponse(w, "Watchlist not found", false, http.StatusNotFound)
 	}
 
-	if err == nil {
-		w.WriteHeader(http.StatusOK)
-		w.Header().Add("Content-Type", "application/json")
+	watchlistByte, err := json.Marshal(watchlist)
 
-		json.NewEncoder(w).Encode(watchlist)
+	watchlistJson := fmt.Sprintf("%s", watchlistByte)
+
+	if err == nil {
+		utils.WriteResponse(w, watchlistJson, true, http.StatusOK)
 	}
 
 }
@@ -46,21 +45,16 @@ func HandleAddMovieToWatchlist(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&movieToAdd)
 
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Print(err)
+		utils.WriteResponse(w, "Request is malformed", false, http.StatusBadRequest)
 	}
 
 	err = firestoreDB.AddMovieToWatchlist(firestoreDB.ClientDB, movieToAdd.MovieID, movieToAdd.Username)
 
 	if err != nil {
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Println(err)
+		utils.WriteResponse(w, "Watchlist not found", false, http.StatusNotFound)
 	}
 
 	if err == nil {
-		w.WriteHeader(http.StatusOK)
-		w.Header().Add("Content-Type", "application/json")
-
-		json.NewEncoder(w).Encode(movieToAdd)
+		utils.WriteResponse(w, "Movie added", true, http.StatusCreated)
 	}
 }
