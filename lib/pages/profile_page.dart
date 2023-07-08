@@ -22,14 +22,14 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<List<WatchlistItem>> fetchWatchlist(String user) async {
-    // var watchlist = await API().getWatchlistForUser(user);
+    var watchlist = await API().getWatchlistForUser(user);
 
-    var watchlist = List.generate(
-        5,
-        (index) => WatchlistItem(
-            movieID: Random().nextInt(99999) + 29999,
-            userRating: 1,
-            watched: false));
+    // var watchlist = List.generate(
+    //     5,
+    //     (index) => WatchlistItem(
+    //         movieID: Random().nextInt(99999) + 29999,
+    //         userRating: 1,
+    //         watched: false));
     return watchlist;
   }
 

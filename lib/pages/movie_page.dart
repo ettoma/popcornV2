@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:popcorn_v2/api/api.dart';
+import 'package:popcorn_v2/api/utils.dart';
 import 'package:popcorn_v2/components/app_bar.dart';
 
-import 'api/models.dart';
+import '../api/models.dart';
 
 class MoviePage extends StatefulWidget {
   const MoviePage({super.key, required this.movieID});
@@ -13,14 +14,44 @@ class MoviePage extends StatefulWidget {
   State<MoviePage> createState() => _MoviePageState();
 }
 
+var isAlreadyOnWatchlist;
+
 class _MoviePageState extends State<MoviePage> {
   Future<Movie> fetchMovieData(String id) async {
     var movieData = await API().getMovieFromID(id);
+    isAlreadyOnWatchlist = await WatchlistUtils()
+        .checkIfAlreadyOnWatchlist(int.parse(widget.movieID));
     return movieData;
   }
 
   @override
   Widget build(BuildContext context) {
+    void addToWatchlist(String user, int movieID) async {
+      API().addToWatchlist(movieID, user);
+      setState(() {
+        isAlreadyOnWatchlist = true; //! doesn't work
+      });
+    }
+
+    FloatingActionButton renderAddToWatchlistButton() {
+      if (isAlreadyOnWatchlist) {
+        return FloatingActionButton.small(
+          onPressed: () {
+            //TODO: implement remove from watchlist
+          },
+          child: const Icon(Icons.check),
+        );
+      } else {
+        return FloatingActionButton.small(
+          onPressed: () {
+            addToWatchlist("ettore-1234", int.parse(widget.movieID));
+            //TODO: implement status change after adding the movie to the watchlist
+          },
+          child: const Icon(Icons.add),
+        );
+      }
+    }
+
     return FutureBuilder<Movie>(
       future: fetchMovieData(widget.movieID),
       builder: (context, snapshot) {
@@ -34,10 +65,7 @@ class _MoviePageState extends State<MoviePage> {
           // Display the fetched data
           final data = snapshot.data!;
           return Scaffold(
-            floatingActionButton: FloatingActionButton.small(
-              onPressed: () {},
-              child: const Icon(Icons.add),
-            ),
+            floatingActionButton: renderAddToWatchlistButton(),
             appBar: MyAppBar(title: data.title),
             body: SafeArea(
               child: SingleChildScrollView(

@@ -3,7 +3,7 @@ import 'package:popcorn_v2/api/api.dart';
 import 'package:popcorn_v2/components/app_bar.dart';
 import 'package:popcorn_v2/components/movie_tile.dart';
 
-import 'api/models.dart';
+import '../api/models.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});

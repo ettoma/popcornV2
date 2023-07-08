@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:popcorn_v2/api/models.dart';
+import 'package:popcorn_v2/api/utils.dart';
 
 class API {
   var headers = {
@@ -21,9 +22,9 @@ class API {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
 
-        var results = data['results'];
+        var dataJson = data["message"];
 
-        for (var movieJson in results) {
+        for (var movieJson in dataJson["results"]) {
           var movie = Movie.fromJson(movieJson);
           movies.add(movie);
         }
@@ -49,7 +50,7 @@ class API {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
 
-        movie = Movie.fromJson(data);
+        movie = Movie.fromJson(data["message"]);
         movie.voteAverage =
             num.tryParse(movie.voteAverage!.toStringAsPrecision(2))!.toDouble();
 
@@ -77,8 +78,10 @@ class API {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
 
+        var dataJson = jsonDecode(data["message"]);
+
         watchlist = List<WatchlistItem>.from(
-            data["watchlist"].map((e) => WatchlistItem.fromJson(e)));
+            dataJson["watchlist"].map((e) => WatchlistItem.fromJson(e)));
 
         return watchlist;
       } else if (response.statusCode == 404) {
@@ -90,6 +93,32 @@ class API {
       }
     } catch (error) {
       rethrow;
+    }
+  }
+
+  void addToWatchlist(int movieID, String user) async {
+    var apiUrl = 'http://127.0.0.1:8080/user/watchlist';
+
+    bool isAlreadyAdded =
+        await WatchlistUtils().checkIfAlreadyOnWatchlist(movieID);
+
+    if (!isAlreadyAdded) {
+      try {
+        var response = await http.put(Uri.parse(apiUrl),
+            body: jsonEncode(
+                <String, dynamic>{"username": user, "movieID": movieID}));
+
+        if (response.statusCode == 200) {
+          var data = json.decode(response.body);
+          print(data);
+        } else if (response.statusCode == 404) {
+          print(response.statusCode);
+        } else {
+          print(response.statusCode);
+        }
+      } catch (error) {
+        rethrow;
+      }
     }
   }
 }

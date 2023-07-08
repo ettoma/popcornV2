@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:popcorn_v2/home.dart';
-import 'package:popcorn_v2/profile_page.dart';
+import 'package:popcorn_v2/pages/home.dart';
+import 'package:popcorn_v2/pages/profile_page.dart';
 
 class PageSwitch extends StatefulWidget {
   const PageSwitch({super.key});

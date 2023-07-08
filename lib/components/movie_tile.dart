@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../movie_page.dart';
+import '../pages/movie_page.dart';
 
 class MovieTile extends StatelessWidget {
   const MovieTile(
