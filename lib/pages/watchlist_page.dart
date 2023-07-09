@@ -24,12 +24,6 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<List<WatchlistItem>> fetchWatchlist(String user) async {
     var watchlist = await API().getWatchlistForUser(user);
 
-    // var watchlist = List.generate(
-    //     5,
-    //     (index) => WatchlistItem(
-    //         movieID: Random().nextInt(99999) + 29999,
-    //         userRating: 1,
-    //         watched: false));
     return watchlist;
   }
 
@@ -47,13 +41,11 @@ class _ProfilePageState extends State<ProfilePage> {
           future: fetchWatchlist("ettore-1234"),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              // Display a loading indicator while waiting for data
-              return const CircularProgressIndicator();
+              return const SizedBox(
+                  width: 75, height: 75, child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              // Display an error message if API call fails
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData) {
-              // Display the fetched data
               final data = snapshot.data!;
               return ListView.builder(
                   itemCount: data.length,
@@ -63,15 +55,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            // Display a loading indicator while waiting for data
                             return const CircularProgressIndicator(
                               color: Colors.white,
                             );
                           } else if (snapshot.hasError) {
-                            // Display an error message if API call fails
                             return Text('Error: ${snapshot.error}');
                           } else if (snapshot.hasData) {
-                            // Display the fetched data
                             final data = snapshot.data!;
                             return GestureDetector(
                               onTap: () {
@@ -90,10 +79,24 @@ class _ProfilePageState extends State<ProfilePage> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
                                 child: ListTile(
-                                  leading: const Icon(
-                                    Icons.podcasts,
-                                    color: Colors.amber,
+                                  leading: Text(
+                                    data.title.substring(0, 1),
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24),
                                   ),
+                                  // leading: Text(
+                                  //   data.voteAverage.toString(),
+                                  //   style: const TextStyle(
+                                  //       color: Colors.white,
+                                  //       fontWeight: FontWeight.bold,
+                                  //       fontSize: 24),
+                                  // ),
+                                  // leading: const Icon(
+                                  //   Icons.trending_up_rounded,
+                                  //   color: Colors.amber,
+                                  // ),
                                   trailing: const Icon(
                                     Icons.arrow_forward_ios,
                                     color: Colors.amberAccent,
@@ -105,9 +108,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  subtitle: Text(
-                                    "${data.voteAverage} (${data.voteCount})",
-                                    style: const TextStyle(color: Colors.white),
+                                  subtitle: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.star_rate_rounded,
+                                        color: Colors.amber,
+                                      ),
+                                      Text(
+                                        "${data.voteAverage} (${data.voteCount})",
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),

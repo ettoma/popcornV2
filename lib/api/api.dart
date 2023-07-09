@@ -96,7 +96,7 @@ class API {
     }
   }
 
-  void addToWatchlist(int movieID, String user) async {
+  Future<void> addToWatchlist(int movieID, String user) async {
     var apiUrl = 'http://127.0.0.1:8080/user/watchlist';
 
     bool isAlreadyAdded =
@@ -108,17 +108,38 @@ class API {
             body: jsonEncode(
                 <String, dynamic>{"username": user, "movieID": movieID}));
 
-        if (response.statusCode == 200) {
-          var data = json.decode(response.body);
-          print(data);
+        if (response.statusCode == 201) {
+          return;
         } else if (response.statusCode == 404) {
           print(response.statusCode);
         } else {
-          print(response.statusCode);
+          var data = jsonDecode(response.body);
+          print(data);
         }
       } catch (error) {
         rethrow;
       }
+    }
+  }
+
+  Future<void> removeFromWatchlist(int movieID, String user) async {
+    var apiUrl = 'http://127.0.0.1:8080/user/watchlist';
+
+    try {
+      var response = await http.delete(Uri.parse(apiUrl),
+          body: jsonEncode(
+              <String, dynamic>{"username": user, "movieID": movieID}));
+
+      if (response.statusCode == 200) {
+        return;
+      } else if (response.statusCode == 404) {
+        print(response.statusCode);
+      } else {
+        var data = jsonDecode(response.body);
+        print(data);
+      }
+    } catch (error) {
+      rethrow;
     }
   }
 }

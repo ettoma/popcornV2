@@ -14,42 +14,30 @@ class MoviePage extends StatefulWidget {
   State<MoviePage> createState() => _MoviePageState();
 }
 
-var isAlreadyOnWatchlist;
-
 class _MoviePageState extends State<MoviePage> {
+  bool isAlreadyOnWatchlist = false;
   Future<Movie> fetchMovieData(String id) async {
     var movieData = await API().getMovieFromID(id);
     isAlreadyOnWatchlist = await WatchlistUtils()
         .checkIfAlreadyOnWatchlist(int.parse(widget.movieID));
+
     return movieData;
   }
 
   @override
   Widget build(BuildContext context) {
-    void addToWatchlist(String user, int movieID) async {
-      API().addToWatchlist(movieID, user);
+    void removeFromWatchlist(String user, int movieID) async {
+      await API().removeFromWatchlist(movieID, user);
       setState(() {
-        isAlreadyOnWatchlist = true; //! doesn't work
+        isAlreadyOnWatchlist = false;
       });
     }
 
-    FloatingActionButton renderAddToWatchlistButton() {
-      if (isAlreadyOnWatchlist) {
-        return FloatingActionButton.small(
-          onPressed: () {
-            //TODO: implement remove from watchlist
-          },
-          child: const Icon(Icons.check),
-        );
-      } else {
-        return FloatingActionButton.small(
-          onPressed: () {
-            addToWatchlist("ettore-1234", int.parse(widget.movieID));
-            //TODO: implement status change after adding the movie to the watchlist
-          },
-          child: const Icon(Icons.add),
-        );
-      }
+    void addToWatchlist(String user, int movieID) async {
+      await API().addToWatchlist(movieID, user);
+      setState(() {
+        isAlreadyOnWatchlist = true;
+      });
     }
 
     return FutureBuilder<Movie>(
@@ -65,7 +53,25 @@ class _MoviePageState extends State<MoviePage> {
           // Display the fetched data
           final data = snapshot.data!;
           return Scaffold(
-            floatingActionButton: renderAddToWatchlistButton(),
+            floatingActionButton: isAlreadyOnWatchlist
+                ? FloatingActionButton.small(
+                    onPressed: () {
+                      removeFromWatchlist(
+                          "ettore-1234", int.parse(widget.movieID));
+                      setState(() {
+                        isAlreadyOnWatchlist = false;
+                      });
+                    },
+                    child: const Icon(Icons.check),
+                  )
+                : FloatingActionButton.small(
+                    onPressed: () {
+                      addToWatchlist("ettore-1234", int.parse(widget.movieID));
+                      setState(() {
+                        isAlreadyOnWatchlist = true;
+                      });
+                    },
+                    child: const Icon(Icons.add)),
             appBar: MyAppBar(title: data.title),
             body: SafeArea(
               child: SingleChildScrollView(
@@ -90,26 +96,55 @@ class _MoviePageState extends State<MoviePage> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 58, 44, 99),
+                              color: Colors.white10,
                               borderRadius: BorderRadius.circular(8)),
                           margin: const EdgeInsets.all(5),
                           padding: const EdgeInsets.all(25),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              data.releaseDate != ''
-                                  ? Text(
-                                      'Year: ${data.releaseDate?.substring(0, 4)}',
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                    )
-                                  : const Text('Year: n/a',
-                                      style: TextStyle(color: Colors.white)),
-                              Text(
-                                  'Vote Avg: ${data.voteAverage} (${data.voteCount})',
-                                  style: const TextStyle(color: Colors.white)),
-                              Text('Overview: ${data.overview}',
-                                  style: const TextStyle(color: Colors.white))
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(Icons.star_rate_rounded,
+                                          color: Colors.amberAccent),
+                                      const SizedBox(
+                                        width: 7,
+                                      ),
+                                      Text(
+                                          '${data.voteAverage} (${data.voteCount})',
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold)),
+                                    ],
+                                  ),
+                                  data.releaseDate != ''
+                                      ? Text(
+                                          'Year: ${data.releaseDate?.substring(0, 4)}',
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      : const Text('Year: n/a',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(top: 15),
+                                child: Text('${data.overview}',
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold)),
+                              )
                             ],
                           ),
                         ),

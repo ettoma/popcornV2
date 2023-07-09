@@ -32,11 +32,11 @@ class Movie {
 }
 
 class WatchlistItem {
-  final int? movieID;
+  final int movieID;
   final num? userRating;
   final bool? watched;
 
-  WatchlistItem({this.movieID, this.userRating, this.watched});
+  WatchlistItem({required this.movieID, this.userRating, this.watched});
 
   factory WatchlistItem.fromJson(Map<String, dynamic> json) {
     return WatchlistItem(
