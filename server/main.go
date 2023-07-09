@@ -49,6 +49,7 @@ func main() {
 
 	r.HandleFunc("/user/watchlist", handles.HandleGetUserWatchlist).Methods("POST")
 	r.HandleFunc("/user/watchlist", handles.HandleAddMovieToWatchlist).Methods("PUT")
+	r.HandleFunc("/user/watchlist", handles.HandleRemoveMovieFromWatchlist).Methods("DELETE")
 
 	log.Printf("Server started at: http://localhost%s", srv.Addr)
 	log.Fatal(srv.ListenAndServe())

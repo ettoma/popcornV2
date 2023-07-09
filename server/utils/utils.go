@@ -32,5 +32,8 @@ func WriteResponse(w http.ResponseWriter, value interface{}, success bool, statu
 }
 
 func HandleError(err error) {
-	log.Printf("%s", err)
+	if err != nil {
+		log.Printf("%s", err)
+	}
+
 }

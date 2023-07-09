@@ -55,7 +55,7 @@ func GetDocuments(client *firestore.Client, user string) (*Watchlist, error) {
 	data, err := doc.Get(context.Background())
 
 	if status.Code(err) == codes.NotFound {
-		fmt.Println("ouch: ", err)
+		fmt.Println("Document not found: ", err)
 		return nil, err
 	}
 
