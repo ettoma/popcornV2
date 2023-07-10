@@ -1,16 +1,15 @@
-# popcorn_v2
+# popcorn
 
-A new Flutter project.
+A watchlist tracker in Flutter with Golang backend + Firebase
 
-## Getting Started
+## What does it do
 
-This project is a starting point for a Flutter application.
+- Look up movies and add them to your watchlist.
+- Rate them after watching to create your own movie archive
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Tech stack
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Flutter + Dart
+Golang REST API
+Firebase Firestore DB + Login functionality
