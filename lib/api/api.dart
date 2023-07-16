@@ -5,10 +5,10 @@ import 'package:popcorn_v2/api/models.dart';
 import 'package:popcorn_v2/api/utils.dart';
 
 class API {
-  var headers = {
-    'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWRkNjUwNWQ0OTBlZjEyNWIwMzZjYjhlNzQ3YTQ1OCIsInN1YiI6IjY0NzFjNTgzYTE5OWE2MDBiZjI5NjI0NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.S6O7yWHWLYwOOGwpzW2GhxQJrOHxuzWvx_0NGBve21s'
-  };
+  // var headers = {
+  //   'Authorization':
+  //       'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWRkNjUwNWQ0OTBlZjEyNWIwMzZjYjhlNzQ3YTQ1OCIsInN1YiI6IjY0NzFjNTgzYTE5OWE2MDBiZjI5NjI0NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.S6O7yWHWLYwOOGwpzW2GhxQJrOHxuzWvx_0NGBve21s'
+  // };
 
   Future<List<Movie>> getMoviesFromKeyword(String keyword) async {
     List<Movie> movies = [];
@@ -17,7 +17,7 @@ class API {
     var apiUrl = 'http://127.0.0.1:8080/query=$keyword';
 
     try {
-      var response = await http.get(Uri.parse(apiUrl), headers: headers);
+      var response = await http.get(Uri.parse(apiUrl));
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -46,7 +46,7 @@ class API {
     var apiUrl = 'http://127.0.0.1:8080/id=$id';
 
     try {
-      var response = await http.get(Uri.parse(apiUrl), headers: headers);
+      var response = await http.get(Uri.parse(apiUrl));
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
 

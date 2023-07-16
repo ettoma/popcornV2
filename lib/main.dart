@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:popcorn_v2/pages/page_switch.dart';
+// import 'package:popcorn_v2/pages/page_switch.dart';
+import 'package:popcorn_v2/pages/user_auth.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +22,8 @@ class App extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const PageSwitch(),
+      home: const UserAuthenticationPage(),
+      // home: const PageSwitch(),
     );
   }
 }
