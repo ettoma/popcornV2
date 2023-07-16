@@ -9,25 +9,39 @@ import (
 
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
+	"firebase.google.com/go/auth"
+	authdb "github.com/ettoma/popcorn_v2/auth_db"
 	"google.golang.org/api/option"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 var ClientDB *firestore.Client
+var AuthDB *auth.Client
 
 func Initialise() error {
 
-	var isInitialised bool
+	var isFirestoreInitialised bool
 	//* initialise Firestore database
-	isInitialised, ClientDB = InitialiseFirestore()
+	isFirestoreInitialised, ClientDB = InitialiseFirestore()
 
-	if isInitialised == true {
-		log.Println("Firestore DB initalised")
-		return nil
+	if isFirestoreInitialised != true {
+		return errors.New("Failed to initialise Firestore DB")
 	}
 
-	return errors.New("Failed to initialise Firestore DB")
+	log.Println("Firestore DB initialised correctly")
+
+	var isAuthDBInitialised bool
+
+	isAuthDBInitialised, AuthDB = authdb.InitialiseAuthDB()
+
+	if isAuthDBInitialised != true {
+		return errors.New("Failed to initialise Auth DB")
+	}
+
+	log.Println("Auth DB initialised correctly")
+
+	return nil
 
 }
 

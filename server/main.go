@@ -6,15 +6,12 @@ import (
 	"net/http"
 	"time"
 
-	"cloud.google.com/go/firestore"
 	firestoreDB "github.com/ettoma/popcorn_v2/firestore_db"
 	"github.com/ettoma/popcorn_v2/handles"
 	"github.com/ettoma/popcorn_v2/middlewares"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
-
-var CLIENT *firestore.Client
 
 func main() {
 
@@ -35,6 +32,7 @@ func main() {
 	r := mux.NewRouter().StrictSlash(false)
 
 	r.Use(middlewares.LoggingMiddleware)
+	r.Use(middlewares.Cors)
 
 	srv := &http.Server{
 		Addr:         PORT,
@@ -50,6 +48,9 @@ func main() {
 	r.HandleFunc("/user/watchlist", handles.HandleGetUserWatchlist).Methods("POST")
 	r.HandleFunc("/user/watchlist", handles.HandleAddMovieToWatchlist).Methods("PUT")
 	r.HandleFunc("/user/watchlist", handles.HandleRemoveMovieFromWatchlist).Methods("DELETE")
+
+	r.HandleFunc("/users/signup", handles.HandleAddUser).Methods("POST")
+	r.HandleFunc("/users/login", handles.HandleLogIn).Methods("POST")
 
 	log.Printf("Server started at: http://localhost%s", srv.Addr)
 	log.Fatal(srv.ListenAndServe())
