@@ -14,7 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "407432915878-2o5bsr3lsnlkafh2673rvoos7fat1aml.apps.googleusercontent.com",
+          "client_id": "407432915878-g7id1v1rjjfe4n8bb6bh64m4110vhdh9.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -31,10 +31,10 @@
               "client_type": 3
             },
             {
-              "client_id": "407432915878-ktn6h1ml6afl2tt0put90enko1ro12ha.apps.googleusercontent.com",
+              "client_id": "407432915878-2ukeuqrbjmq1g252i5pkcvjph0vu25ea.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.tamnada.popcorn"
+                "bundle_id": "com.example.popcornV2.RunnerTests"
               }
             }
           ]

@@ -8,7 +8,9 @@ import 'package:popcorn_v2/components/app_bar.dart';
 import 'movie_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({super.key, required this.user});
+
+  final String user;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -38,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: const MyAppBar(title: "Watchlist"),
       body: Center(
         child: FutureBuilder<List<WatchlistItem>>(
-          future: fetchWatchlist("ettore-1234"),
+          future: fetchWatchlist(widget.user),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const SizedBox(

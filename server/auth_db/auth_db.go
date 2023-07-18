@@ -26,14 +26,6 @@ func InitialiseAuthDB() (bool, *auth.Client) {
 		return false, nil
 	}
 
-	// uid := "IgjufntrQ3YtIufZ157o8jv864i2"
-	// u, err := client.GetUser(ctx, uid)
-	// if err != nil {
-	// 	log.Fatalf("error getting user %s: %v\n", uid, err)
-	// }
-	// log.Printf("Successfully fetched user data: %v\n", u)
-	// log.Print(u.Email)
-
 	return true, client
 }
 
@@ -54,19 +46,9 @@ func AddUser(email, password string, client *auth.Client) error {
 }
 
 func LogIn(email, password string, client *auth.Client) error {
-	user, err := client.EmailSignInLink(context.Background(), email, &auth.ActionCodeSettings{
-		URL: "https://google.com",
-	})
-	if err != nil {
-		log.Println(err)
-		return err
-	}
 
-	log.Println(user)
+	token, err := client.CustomToken(context.Background(), email)
 
-	// // If the user is logged in, print their uid.
-	// if user != nil {
-	//     log.Println(user.UID)
-	// }
+	log.Println(token, err)
 	return nil
 }

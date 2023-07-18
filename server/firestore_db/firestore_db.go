@@ -66,6 +66,7 @@ func InitialiseFirestore() (bool, *firestore.Client) {
 func GetDocuments(client *firestore.Client, user string) (*Watchlist, error) {
 
 	doc := client.Doc("users/" + user)
+	log.Println(user)
 	data, err := doc.Get(context.Background())
 
 	if status.Code(err) == codes.NotFound {

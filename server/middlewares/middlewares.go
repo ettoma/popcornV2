@@ -15,7 +15,7 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-var domains = [...]string{"http://localhost:59253", "", "http://localhost:8080", "http://localhost:56088"}
+var domains = [...]string{"http://localhost:52233", "", "http://localhost:8080", "http://localhost:56088"}
 
 func Cors(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

@@ -3,7 +3,8 @@ import 'package:popcorn_v2/pages/homepage.dart';
 import 'package:popcorn_v2/pages/watchlist_page.dart';
 
 class PageSwitch extends StatefulWidget {
-  const PageSwitch({super.key});
+  const PageSwitch({super.key, required this.user});
+  final String user;
 
   @override
   State<PageSwitch> createState() => _PageSwitchState();
@@ -15,8 +16,7 @@ class _PageSwitchState extends State<PageSwitch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: MyAppBar(title: "popcorn 🍿"),
-      body: _buildPageIndex(_currentIndex),
+      body: _buildPageIndex(_currentIndex, widget.user),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         selectedItemColor: Colors.tealAccent,
@@ -45,12 +45,13 @@ class _PageSwitchState extends State<PageSwitch> {
   }
 }
 
-Widget _buildPageIndex(int index) {
+Widget _buildPageIndex(int index, String user) {
+  print(user);
   switch (index) {
     case 0:
       return const Homepage();
     case 1:
-      return const ProfilePage();
+      return ProfilePage(user: user);
     default:
       return const Homepage();
   }

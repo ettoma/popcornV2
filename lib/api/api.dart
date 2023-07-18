@@ -5,11 +5,6 @@ import 'package:popcorn_v2/api/models.dart';
 import 'package:popcorn_v2/api/utils.dart';
 
 class API {
-  // var headers = {
-  //   'Authorization':
-  //       'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWRkNjUwNWQ0OTBlZjEyNWIwMzZjYjhlNzQ3YTQ1OCIsInN1YiI6IjY0NzFjNTgzYTE5OWE2MDBiZjI5NjI0NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.S6O7yWHWLYwOOGwpzW2GhxQJrOHxuzWvx_0NGBve21s'
-  // };
-
   Future<List<Movie>> getMoviesFromKeyword(String keyword) async {
     List<Movie> movies = [];
 

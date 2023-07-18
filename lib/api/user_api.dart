@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 class UserAPI {
@@ -26,5 +27,18 @@ class UserAPI {
       rethrow;
     }
     return false;
+  }
+
+  Future<bool> signInWithEmailPassword(String email, password) async {
+    try {
+      final userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      print("Sign-in successful.");
+      print(userCredential);
+      return true;
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+      return false;
+    }
   }
 }
