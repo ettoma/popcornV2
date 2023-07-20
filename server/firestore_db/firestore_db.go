@@ -66,11 +66,21 @@ func InitialiseFirestore() (bool, *firestore.Client) {
 func GetDocuments(client *firestore.Client, user string) (*Watchlist, error) {
 
 	doc := client.Doc("users/" + user)
-	log.Println(user)
 	data, err := doc.Get(context.Background())
 
 	if status.Code(err) == codes.NotFound {
 		fmt.Println("Document not found: ", err)
+		fmt.Println("creating new document for user ", user)
+
+		_, err := client.Doc("users/"+user).Create(context.Background(), map[string]interface{}{
+			"watchlist": []WatchlistItem{
+				{
+					MovieID:    92311,
+					UserRating: 0.0,
+					Watched:    false,
+				},
+			},
+		})
 		return nil, err
 	}
 

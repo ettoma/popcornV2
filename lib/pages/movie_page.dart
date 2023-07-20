@@ -6,9 +6,10 @@ import 'package:popcorn_v2/components/app_bar.dart';
 import '../api/models.dart';
 
 class MoviePage extends StatefulWidget {
-  const MoviePage({super.key, required this.movieID});
+  const MoviePage({super.key, required this.movieID, required this.user});
 
   final String movieID;
+  final String user;
 
   @override
   State<MoviePage> createState() => _MoviePageState();
@@ -18,8 +19,8 @@ class _MoviePageState extends State<MoviePage> {
   bool isAlreadyOnWatchlist = false;
   Future<Movie> fetchMovieData(String id) async {
     var movieData = await API().getMovieFromID(id);
-    isAlreadyOnWatchlist = await WatchlistUtils()
-        .checkIfAlreadyOnWatchlist(int.parse(widget.movieID));
+    // isAlreadyOnWatchlist = await WatchlistUtils()
+    //     .checkIfAlreadyOnWatchlist(int.parse(widget.movieID), widget.user);
 
     return movieData;
   }
@@ -57,7 +58,7 @@ class _MoviePageState extends State<MoviePage> {
                 ? FloatingActionButton.small(
                     onPressed: () {
                       removeFromWatchlist(
-                          "ettore-1234", int.parse(widget.movieID));
+                          widget.user, int.parse(widget.movieID));
                       setState(() {
                         isAlreadyOnWatchlist = false;
                       });
@@ -66,7 +67,7 @@ class _MoviePageState extends State<MoviePage> {
                   )
                 : FloatingActionButton.small(
                     onPressed: () {
-                      addToWatchlist("ettore-1234", int.parse(widget.movieID));
+                      addToWatchlist(widget.user, int.parse(widget.movieID));
                       setState(() {
                         isAlreadyOnWatchlist = true;
                       });

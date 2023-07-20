@@ -6,7 +6,9 @@ import 'package:popcorn_v2/components/movie_tile.dart';
 import '../api/models.dart';
 
 class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+  const Homepage({super.key, required this.user});
+
+  final String user;
 
   @override
   State<Homepage> createState() => _HomepageState();
@@ -70,10 +72,12 @@ class _HomepageState extends State<Homepage> {
                   var movie = fetchedMovies[index];
 
                   return MovieTile(
-                      id: movie.id,
-                      title: movie.title,
-                      voteAverage: movie.voteAverage!,
-                      posterPath: movie.posterPath ?? '');
+                    id: movie.id,
+                    title: movie.title,
+                    voteAverage: movie.voteAverage!,
+                    posterPath: movie.posterPath ?? '',
+                    user: widget.user,
+                  );
                 },
               ),
             )

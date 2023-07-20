@@ -13,6 +13,22 @@ class PageSwitch extends StatefulWidget {
 class _PageSwitchState extends State<PageSwitch> {
   int _currentIndex = 0;
 
+  Widget _buildPageIndex(int index, String user) {
+    print(user);
+    switch (index) {
+      case 0:
+        return Homepage(
+          user: widget.user,
+        );
+      case 1:
+        return ProfilePage(user: user);
+      default:
+        return Homepage(
+          user: widget.user,
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,17 +58,5 @@ class _PageSwitchState extends State<PageSwitch> {
         ],
       ),
     );
-  }
-}
-
-Widget _buildPageIndex(int index, String user) {
-  print(user);
-  switch (index) {
-    case 0:
-      return const Homepage();
-    case 1:
-      return ProfilePage(user: user);
-    default:
-      return const Homepage();
   }
 }

@@ -8,12 +8,14 @@ class MovieTile extends StatelessWidget {
       required this.title,
       required this.voteAverage,
       this.posterPath,
-      required this.id});
+      required this.id,
+      required this.user});
 
   final int id;
   final String title;
   final num voteAverage;
   final String? posterPath;
+  final String user;
 
   String formatVoteAvg(num n) {
     var b = n.toStringAsPrecision(2);
@@ -24,7 +26,10 @@ class MovieTile extends StatelessWidget {
   Widget build(BuildContext context) {
     void navigateToMoviePage(String movieID) {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => MoviePage(movieID: movieID),
+        builder: (context) => MoviePage(
+          movieID: movieID,
+          user: user,
+        ),
       ));
     }
 

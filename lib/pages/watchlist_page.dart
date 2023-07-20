@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:popcorn_v2/api/api.dart';
 import 'package:popcorn_v2/api/models.dart';
@@ -19,7 +17,10 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   void navigateToMoviePage(String movieID) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => MoviePage(movieID: movieID),
+      builder: (context) => MoviePage(
+        movieID: movieID,
+        user: widget.user,
+      ),
     ));
   }
 
@@ -67,8 +68,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             return GestureDetector(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      MoviePage(movieID: data.id.toString()),
+                                  builder: (context) => MoviePage(
+                                    movieID: data.id.toString(),
+                                    user: widget.user,
+                                  ),
                                 ));
                               },
                               child: Container(

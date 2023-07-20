@@ -9,6 +9,7 @@ import (
 	firestoreDB "github.com/ettoma/popcorn_v2/firestore_db"
 	"github.com/ettoma/popcorn_v2/handles"
 	"github.com/ettoma/popcorn_v2/middlewares"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
@@ -28,15 +29,17 @@ func main() {
 
 	//* initialise server
 	PORT := ":8080"
-
-	r := mux.NewRouter().StrictSlash(false)
+	r := mux.NewRouter()
 
 	r.Use(middlewares.LoggingMiddleware)
-	r.Use(middlewares.Cors)
 
 	srv := &http.Server{
-		Addr:         PORT,
-		Handler:      r,
+		Addr: PORT,
+		Handler: handlers.CORS(
+			handlers.AllowedOrigins([]string{"*"}),
+			handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
+			handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),
+		)(r),
 		ReadTimeout:  time.Second * 15,
 		WriteTimeout: time.Second * 15,
 	}
@@ -46,12 +49,13 @@ func main() {
 	r.HandleFunc("/id={id}", handles.HandleGetMovieFromId).Methods("GET")
 
 	r.HandleFunc("/user/watchlist", handles.HandleGetUserWatchlist).Methods("POST")
-	r.HandleFunc("/user/watchlist", handles.HandleAddMovieToWatchlist).Methods("PUT")
+	r.HandleFunc("/user/watchlist/add", handles.HandleAddMovieToWatchlist).Methods("PUT")
 	r.HandleFunc("/user/watchlist", handles.HandleRemoveMovieFromWatchlist).Methods("DELETE")
 
 	r.HandleFunc("/users/signup", handles.HandleAddUser).Methods("POST")
 	r.HandleFunc("/users/login", handles.HandleLogIn).Methods("POST")
 
-	log.Printf("Server started at: http://localhost%s", srv.Addr)
+	log.Printf("Server started at: http://localhost%s", PORT)
+
 	log.Fatal(srv.ListenAndServe())
 }

@@ -23,6 +23,8 @@ func WriteResponse(w http.ResponseWriter, value interface{}, success bool, statu
 		StatusCode: status,
 	})
 
+	log.Println("success: ", success, "\nstatus: ", status)
+
 	if err != nil {
 		w.Write([]byte(err.Error()))
 	} else {

@@ -3,6 +3,7 @@ package handles
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	firestoreDB "github.com/ettoma/popcorn_v2/firestore_db"
@@ -21,9 +22,11 @@ func HandleGetUserWatchlist(w http.ResponseWriter, r *http.Request) {
 		utils.WriteResponse(w, "Request is malformed", false, http.StatusBadRequest)
 	}
 
+	log.Println("checking watchlist for user: ", user.Username)
 	watchlist, err = firestoreDB.GetDocuments(firestoreDB.ClientDB, user.Username)
 
 	if err != nil {
+		log.Println("couldn't find watchlist")
 		utils.WriteResponse(w, "Watchlist not found", false, http.StatusNotFound)
 	}
 
@@ -44,13 +47,16 @@ func HandleAddMovieToWatchlist(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&movieToAdd)
 
+	// log.Println("username: ", movieToAdd.Username)
 	if err != nil {
+
 		utils.WriteResponse(w, "Request is malformed", false, http.StatusBadRequest)
 	}
 
 	err = firestoreDB.AddMovieToWatchlist(firestoreDB.ClientDB, movieToAdd.MovieID, movieToAdd.Username)
 
 	if err != nil {
+		log.Println("whops")
 		utils.WriteResponse(w, "Watchlist not found", false, http.StatusNotFound)
 	}
 
