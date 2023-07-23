@@ -73,15 +73,11 @@ func GetDocuments(client *firestore.Client, user string) (*Watchlist, error) {
 		fmt.Println("creating new document for user ", user)
 
 		_, err := client.Doc("users/"+user).Create(context.Background(), map[string]interface{}{
-			"watchlist": []WatchlistItem{
-				{
-					MovieID:    92311,
-					UserRating: 0.0,
-					Watched:    false,
-				},
-			},
-		})
-		return nil, err
+			"watchlist": []string{},
+		},
+		)
+		fmt.Print(err)
+		return nil, errors.New("User watchlist is empty")
 	}
 
 	var w *Watchlist

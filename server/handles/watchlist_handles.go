@@ -26,8 +26,14 @@ func HandleGetUserWatchlist(w http.ResponseWriter, r *http.Request) {
 	watchlist, err = firestoreDB.GetDocuments(firestoreDB.ClientDB, user.Username)
 
 	if err != nil {
-		log.Println("couldn't find watchlist")
-		utils.WriteResponse(w, "Watchlist not found", false, http.StatusNotFound)
+		if err.Error() == "User watchlist is empty" {
+			utils.WriteResponse(
+				w, "User watchlist didn't exist, created a new one", true, http.StatusCreated)
+
+		} else {
+
+			utils.WriteResponse(w, "Error fetching watchlist", false, http.StatusNotFound)
+		}
 	}
 
 	watchlistByte, err := json.Marshal(watchlist)
