@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-// import 'package:popcorn_v2/pages/page_switch.dart';
-import 'package:popcorn_v2/pages/user_auth.dart';
+import 'package:popcorn_v2/pages/login_page.dart';
+import 'package:popcorn_v2/pages/sign_up_page.dart';
 
 import 'firebase/firebase_options.dart';
 
@@ -28,8 +28,7 @@ class App extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const UserAuthenticationPage(),
-      // home: const PageSwitch(),
+      home: const SignUpPage(),
     );
   }
 }

@@ -19,8 +19,8 @@ class _MoviePageState extends State<MoviePage> {
   bool isAlreadyOnWatchlist = false;
   Future<Movie> fetchMovieData(String id) async {
     var movieData = await API().getMovieFromID(id);
-    // isAlreadyOnWatchlist = await WatchlistUtils()
-    //     .checkIfAlreadyOnWatchlist(int.parse(widget.movieID), widget.user);
+    isAlreadyOnWatchlist = await WatchlistUtils()
+        .checkIfAlreadyOnWatchlist(int.parse(widget.movieID), widget.user);
 
     return movieData;
   }

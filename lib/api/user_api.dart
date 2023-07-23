@@ -31,10 +31,9 @@ class UserAPI {
 
   Future<bool> signInWithEmailPassword(String email, password) async {
     try {
-      final userCredential = await FirebaseAuth.instance
+      await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      print("Sign-in successful.");
-      print(userCredential);
+
       return true;
     } on FirebaseAuthException catch (e) {
       print(e.message);

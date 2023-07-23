@@ -47,9 +47,17 @@ class _ProfilePageState extends State<ProfilePage> {
               return const SizedBox(
                   width: 75, height: 75, child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
+              return Text('Errore: ${snapshot.error}');
             } else if (snapshot.hasData) {
               final data = snapshot.data!;
+              if (data.isEmpty) {
+                return const Center(
+                  child: Text(
+                    "add your first movie now",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                );
+              }
               return ListView.builder(
                   itemCount: data.length,
                   itemBuilder: (context, index) {
@@ -91,17 +99,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 24),
                                   ),
-                                  // leading: Text(
-                                  //   data.voteAverage.toString(),
-                                  //   style: const TextStyle(
-                                  //       color: Colors.white,
-                                  //       fontWeight: FontWeight.bold,
-                                  //       fontSize: 24),
-                                  // ),
-                                  // leading: const Icon(
-                                  //   Icons.trending_up_rounded,
-                                  //   color: Colors.amber,
-                                  // ),
                                   trailing: const Icon(
                                     Icons.arrow_forward_ios,
                                     color: Colors.amberAccent,

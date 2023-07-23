@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:popcorn_v2/api/models.dart';
 
+import 'utils.dart';
+
 class API {
   Future<List<Movie>> getMoviesFromKeyword(String keyword) async {
     List<Movie> movies = [];
@@ -74,6 +76,10 @@ class API {
 
         var dataJson = jsonDecode(data["message"]);
 
+        if (dataJson.toString().length == 17) {
+          //! hardcoded value to check if the data is {watchlist: null} Should be polished
+          return List.empty();
+        }
         watchlist = List<WatchlistItem>.from(
             dataJson["watchlist"].map((e) => WatchlistItem.fromJson(e)));
 
@@ -93,33 +99,28 @@ class API {
   Future<void> addToWatchlist(int movieID, String user) async {
     var apiUrl = 'http://127.0.0.1:8080/user/watchlist/add';
 
-    print("we are here, user $user");
+    bool isAlreadyAdded =
+        await WatchlistUtils().checkIfAlreadyOnWatchlist(movieID, user);
 
-    // bool isAlreadyAdded =
-    //     await WatchlistUtils().checkIfAlreadyOnWatchlist(movieID, user);
+    if (!isAlreadyAdded) {
+      try {
+        var response = await http.put(Uri.parse(apiUrl),
+            body: jsonEncode(
+                <String, dynamic>{"username": user, "movieID": movieID}));
 
-    // if (!isAlreadyAdded) {
-    try {
-      print("now here");
-      var response = await http.put(Uri.parse(apiUrl),
-          body: jsonEncode(
-              <String, dynamic>{"username": user, "movieID": movieID}));
-      print(response.statusCode);
-      print(response.body);
-
-      if (response.statusCode == 201) {
-        return;
-      } else if (response.statusCode == 404) {
-        print(response.statusCode);
-      } else {
-        var data = jsonDecode(response.body);
-        print(data);
+        if (response.statusCode == 201) {
+          return;
+        } else if (response.statusCode == 404) {
+          print(response.statusCode);
+        } else {
+          var data = jsonDecode(response.body);
+          print(data);
+        }
+      } catch (error) {
+        print(error);
+        rethrow;
       }
-    } catch (error) {
-      print(error);
-      rethrow;
     }
-    // }
   }
 
   Future<void> removeFromWatchlist(int movieID, String user) async {
