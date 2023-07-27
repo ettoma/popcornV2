@@ -14,7 +14,6 @@ class _PageSwitchState extends State<PageSwitch> {
   int _currentIndex = 0;
 
   Widget _buildPageIndex(int index, String user) {
-    print(user);
     switch (index) {
       case 0:
         return Homepage(

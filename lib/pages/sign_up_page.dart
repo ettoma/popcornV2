@@ -75,16 +75,22 @@ class _SignUpPageState extends State<SignUpPage> {
                     labelStyle: TextStyle(color: Colors.white54),
                     labelText: 'confirm password',
                   )),
-              ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => Colors.amberAccent),
-                  ),
-                  onPressed: () {
-                    signUp(_emailController.text, _passwordController.text,
-                        _passwordConfirmationController.text);
-                  },
-                  child: const Text("sign up")),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => Colors.amberAccent),
+                    ),
+                    onPressed: () {
+                      signUp(_emailController.text, _passwordController.text,
+                          _passwordConfirmationController.text);
+                    },
+                    child: const Text(
+                      "sign up",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )),
+              ),
             ],
           ),
         ),

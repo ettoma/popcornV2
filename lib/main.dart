@@ -28,7 +28,7 @@ class App extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const SignUpPage(),
+      home: const LoginPage(),
     );
   }
 }
