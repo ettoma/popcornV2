@@ -22,7 +22,6 @@ func HandleGetUserWatchlist(w http.ResponseWriter, r *http.Request) {
 		utils.WriteResponse(w, "Request is malformed", false, http.StatusBadRequest)
 	}
 
-	log.Println("checking watchlist for user: ", user.Username)
 	watchlist, err = firestoreDB.GetDocuments(firestoreDB.ClientDB, user.Username)
 
 	if err != nil {
@@ -53,7 +52,6 @@ func HandleAddMovieToWatchlist(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&movieToAdd)
 
-	// log.Println("username: ", movieToAdd.Username)
 	if err != nil {
 
 		utils.WriteResponse(w, "Request is malformed", false, http.StatusBadRequest)
@@ -77,8 +75,6 @@ func HandleRemoveMovieFromWatchlist(w http.ResponseWriter, r *http.Request) {
 	r.Body = http.MaxBytesReader(w, r.Body, 1048576)
 
 	err := json.NewDecoder(r.Body).Decode(&movieToRemove)
-
-	fmt.Println("movie to remove: ", movieToRemove)
 
 	if err != nil {
 		utils.WriteResponse(w, "Request is malformed", false, http.StatusBadRequest)

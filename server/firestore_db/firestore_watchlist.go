@@ -3,7 +3,6 @@ package firestoreDB
 import (
 	"context"
 	"fmt"
-	"log"
 
 	"cloud.google.com/go/firestore"
 	"github.com/ettoma/popcorn_v2/utils"
@@ -11,10 +10,7 @@ import (
 
 func AddMovieToWatchlist(client *firestore.Client, movieID int, user string) error {
 
-	log.Println("looking for user: ", user)
 	doc := client.Doc("users/" + user)
-
-	log.Println("doc found: ", doc)
 
 	var movieToAdd *WatchlistItem
 
