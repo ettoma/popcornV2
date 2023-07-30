@@ -22,7 +22,7 @@ func HandleGetUserWatchlist(w http.ResponseWriter, r *http.Request) {
 		utils.WriteResponse(w, "Request is malformed", false, http.StatusBadRequest)
 	}
 
-	watchlist, err = firestoreDB.GetDocuments(firestoreDB.ClientDB, user.Username)
+	watchlist, err = firestoreDB.GetDocuments(firestoreDB.ClientDB, user.UID)
 
 	if err != nil {
 		if err.Error() == "User watchlist is empty" {

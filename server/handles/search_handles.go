@@ -1,6 +1,7 @@
 package handles
 
 import (
+	"fmt"
 	"net/http"
 
 	moviesapi "github.com/ettoma/popcorn_v2/movies_api"
@@ -26,4 +27,8 @@ func HandleGetMovieFromId(w http.ResponseWriter, r *http.Request) {
 
 	utils.WriteResponse(w, movie, true, http.StatusOK)
 
+}
+
+func HandleHome(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "home")
 }
