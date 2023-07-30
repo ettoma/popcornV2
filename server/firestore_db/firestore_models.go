@@ -11,7 +11,7 @@ type WatchlistItem struct {
 
 type User struct {
 	Username string `json:"username"`
-	UID      string `json:"uid"`
+	// UID      string `json:"uid"`
 }
 
 type MovieToAdd struct {
