@@ -13,10 +13,10 @@ func InitialiseAuthDB() (bool, *auth.Client) {
 
 	ctx := context.Background()
 	// Test
-	// sa := option.WithCredentialsFile("./firestore_db/service_account_key.json")
+	sa := option.WithCredentialsFile("./service_account_key.json")
 
 	//Production
-	sa := option.WithCredentialsFile("/etc/secrets/service_account_key.json")
+	// sa := option.WithCredentialsFile("/etc/secrets/service_account_key.json")
 
 	app, err := firebase.NewApp(ctx, nil, sa)
 	if err != nil {

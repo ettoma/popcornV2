@@ -14,10 +14,10 @@ import (
 	"github.com/ettoma/popcorn_v2/utils"
 )
 
-var BASE_URL = "https://api.themoviedb.org/3"
-
 func GetMovieFromId(id string) *models.MovieDetails {
+	var BASE_URL = os.Getenv("MOVIEDB_BASE_URL")
 
+	fmt.Print("base url: ", BASE_URL)
 	var start = time.Now()
 	var response *models.MovieDetails
 	queryUrl := fmt.Sprintf("%s/movie/%s", BASE_URL, id)
@@ -58,6 +58,7 @@ func GetMovieFromId(id string) *models.MovieDetails {
 }
 
 func GetMoviesFromKeyword(query string) *models.QueryResults {
+	var BASE_URL = os.Getenv("MOVIEDB_BASE_URL")
 	var response *models.QueryResults
 
 	var start = time.Now()
