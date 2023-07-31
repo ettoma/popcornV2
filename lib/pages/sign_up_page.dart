@@ -26,16 +26,15 @@ class _SignUpPageState extends State<SignUpPage> {
       if (password != passwordConfirmation) {
         //TODO Implement error message
       } else if (password == passwordConfirmation) {
-        var isSuccess = await UserAPI().addUser(email, password);
-        void confirmAndPushPage() {
+        var isSuccess = await UserAPI().createUser(email, password);
+
+        void confirmAndPushPage() async {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text("logged in as $email"),
             backgroundColor: Colors.grey.withOpacity(0.5),
           ));
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => PageSwitch(
-                    user: email,
-                  )));
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const PageSwitch()));
         }
 
         if (isSuccess) {
@@ -58,21 +57,21 @@ class _SignUpPageState extends State<SignUpPage> {
                   style: const TextStyle(color: Colors.amberAccent),
                   controller: _emailController,
                   decoration: const InputDecoration(
-                    labelStyle: TextStyle(color: Colors.white54),
+                    labelStyle: TextStyle(color: Colors.white70),
                     labelText: 'email',
                   )),
               TextFormField(
                   style: const TextStyle(color: Colors.amberAccent),
                   controller: _passwordController,
                   decoration: const InputDecoration(
-                    labelStyle: TextStyle(color: Colors.white54),
+                    labelStyle: TextStyle(color: Colors.white70),
                     labelText: 'password',
                   )),
               TextFormField(
                   style: const TextStyle(color: Colors.amberAccent),
                   controller: _passwordConfirmationController,
                   decoration: const InputDecoration(
-                    labelStyle: TextStyle(color: Colors.white54),
+                    labelStyle: TextStyle(color: Colors.white70),
                     labelText: 'confirm password',
                   )),
               Padding(

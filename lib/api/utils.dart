@@ -1,8 +1,8 @@
-import 'api.dart';
+import 'watchlist_api.dart';
 
 class WatchlistUtils {
-  Future<bool> checkIfAlreadyOnWatchlist(int movieID, String user) async {
-    var watchlist = await API().getWatchlistForUser(user);
+  Future<bool> checkIfAlreadyOnWatchlist(int movieID) async {
+    var watchlist = await WatchlistAPI().getWatchlistForUser();
 
     for (var movie in watchlist) {
       if (movie.movieID == movieID) {

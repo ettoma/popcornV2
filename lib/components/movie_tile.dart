@@ -1,21 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/movie_page.dart';
 
 class MovieTile extends StatelessWidget {
-  const MovieTile(
-      {super.key,
-      required this.title,
-      required this.voteAverage,
-      this.posterPath,
-      required this.id,
-      required this.user});
+  const MovieTile({
+    super.key,
+    required this.title,
+    required this.voteAverage,
+    this.posterPath,
+    required this.id,
+  });
 
   final int id;
   final String title;
   final num voteAverage;
   final String? posterPath;
-  final String user;
 
   String formatVoteAvg(num n) {
     var b = n.toStringAsPrecision(2);
@@ -24,11 +24,12 @@ class MovieTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var currentUser = FirebaseAuth.instance.currentUser!.uid;
     void navigateToMoviePage(String movieID) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => MoviePage(
           movieID: movieID,
-          user: user,
+          user: currentUser,
         ),
       ));
     }
@@ -39,13 +40,13 @@ class MovieTile extends StatelessWidget {
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-        width: 250,
+        width: 200,
         alignment: Alignment.topCenter,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: 300,
+              height: 250,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   image: posterPath!.isNotEmpty

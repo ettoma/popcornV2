@@ -25,18 +25,16 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    void confirmAndPushPage(String email) {
+    void confirmAndPushPage() {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("logged in as $email"),
+        content: Text("logged in as ${_emailController.text}"),
         backgroundColor: Colors.grey.withOpacity(0.5),
       ));
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => PageSwitch(
-                user: email,
-              )));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const PageSwitch()));
     }
 
-    void logIn(String email, password) async {
+    void logInWithEmail(String email, password) async {
       if (!context.mounted) {
         return;
       }
@@ -44,7 +42,19 @@ class _LoginPageState extends State<LoginPage> {
       var isLoggedIn = await UserAPI().signInWithEmailPassword(email, password);
 
       if (isLoggedIn) {
-        confirmAndPushPage(email);
+        confirmAndPushPage();
+      }
+    }
+
+    void logInWithGoogle() async {
+      if (!context.mounted) {
+        return;
+      }
+
+      var isLoggedIn = await UserAPI().signInWithGoogle();
+
+      if (isLoggedIn) {
+        confirmAndPushPage();
       }
     }
 
@@ -58,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-              confirmAndPushPage(snapshot.data!.email!);
+              confirmAndPushPage();
             });
           } else {
             return Padding(
@@ -81,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                         style: const TextStyle(color: Colors.amberAccent),
                         controller: _emailController,
                         decoration: const InputDecoration(
-                          labelStyle: TextStyle(color: Colors.white54),
+                          labelStyle: TextStyle(color: Colors.white70),
                           labelText: 'Username',
                         ),
                         validator: (value) {
@@ -95,14 +105,14 @@ class _LoginPageState extends State<LoginPage> {
                         style: const TextStyle(color: Colors.amberAccent),
                         controller: _passwordController,
                         decoration: InputDecoration(
-                          labelStyle: const TextStyle(color: Colors.white54),
+                          labelStyle: const TextStyle(color: Colors.white70),
                           labelText: 'Password',
                           suffixIcon: GestureDetector(
                             child: Icon(
                               isObscured
                                   ? Icons.visibility_off
                                   : Icons.visibility,
-                              color: Colors.white54,
+                              color: Colors.white70,
                             ),
                             onTap: () {
                               setState(() {
@@ -121,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           child: const Text(
                             "forgot password",
-                            style: TextStyle(color: Colors.white38),
+                            style: TextStyle(color: Colors.white54),
                           )),
                       Padding(
                         padding: const EdgeInsets.all(20.0),
@@ -135,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                                           (states) => Colors.amberAccent),
                                 ),
                                 onPressed: () {
-                                  logIn(_emailController.text,
+                                  logInWithEmail(_emailController.text,
                                       _passwordController.text);
                                 },
                                 child: const Text(
@@ -150,10 +160,16 @@ class _LoginPageState extends State<LoginPage> {
                                 },
                                 child: const Text(
                                   "sign up",
-                                  style: TextStyle(color: Colors.white38),
+                                  style: TextStyle(color: Colors.white54),
                                 )),
                           ],
                         ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          logInWithGoogle();
+                        },
+                        child: Icon(Icons.auto_awesome_mosaic_outlined),
                       )
                     ],
                   ),

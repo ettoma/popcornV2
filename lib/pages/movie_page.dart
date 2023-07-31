@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:popcorn_v2/api/api.dart';
+import 'package:popcorn_v2/api/watchlist_api.dart';
 import 'package:popcorn_v2/api/utils.dart';
 import 'package:popcorn_v2/components/app_bar.dart';
 
@@ -18,24 +18,24 @@ class MoviePage extends StatefulWidget {
 class _MoviePageState extends State<MoviePage> {
   bool isAlreadyOnWatchlist = false;
   Future<Movie> fetchMovieData(String id) async {
-    var movieData = await API().getMovieFromID(id);
+    var movieData = await WatchlistAPI().getMovieFromID(id);
     isAlreadyOnWatchlist = await WatchlistUtils()
-        .checkIfAlreadyOnWatchlist(int.parse(widget.movieID), widget.user);
+        .checkIfAlreadyOnWatchlist(int.parse(widget.movieID));
 
     return movieData;
   }
 
   @override
   Widget build(BuildContext context) {
-    void removeFromWatchlist(String user, int movieID) async {
-      await API().removeFromWatchlist(movieID, user);
+    void removeFromWatchlist(int movieID) async {
+      await WatchlistAPI().removeFromWatchlist(movieID);
       setState(() {
         isAlreadyOnWatchlist = false;
       });
     }
 
-    void addToWatchlist(String user, int movieID) async {
-      await API().addToWatchlist(movieID, user);
+    void addToWatchlist(int movieID) async {
+      await WatchlistAPI().addToWatchlist(movieID);
       setState(() {
         isAlreadyOnWatchlist = true;
       });
@@ -57,8 +57,7 @@ class _MoviePageState extends State<MoviePage> {
             floatingActionButton: isAlreadyOnWatchlist
                 ? FloatingActionButton.small(
                     onPressed: () {
-                      removeFromWatchlist(
-                          widget.user, int.parse(widget.movieID));
+                      removeFromWatchlist(int.parse(widget.movieID));
                       setState(() {
                         isAlreadyOnWatchlist = false;
                       });
@@ -67,7 +66,7 @@ class _MoviePageState extends State<MoviePage> {
                   )
                 : FloatingActionButton.small(
                     onPressed: () {
-                      addToWatchlist(widget.user, int.parse(widget.movieID));
+                      addToWatchlist(int.parse(widget.movieID));
                       setState(() {
                         isAlreadyOnWatchlist = true;
                       });

@@ -1,47 +1,47 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:popcorn_v2/api/api.dart';
+import 'package:popcorn_v2/api/watchlist_api.dart';
 import 'package:popcorn_v2/api/models.dart';
 import 'package:popcorn_v2/components/app_bar.dart';
 
 import 'movie_page.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key, required this.user});
-
-  final String user;
+class WatchlistPage extends StatefulWidget {
+  const WatchlistPage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<WatchlistPage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<WatchlistPage> {
   void navigateToMoviePage(String movieID) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => MoviePage(
         movieID: movieID,
-        user: widget.user,
+        user: FirebaseAuth.instance.currentUser!.uid,
       ),
     ));
   }
 
-  Future<List<WatchlistItem>> fetchWatchlist(String user) async {
-    var watchlist = await API().getWatchlistForUser(user);
+  Future<List<WatchlistItem>> fetchWatchlist() async {
+    var watchlist = await WatchlistAPI().getWatchlistForUser();
 
     return watchlist;
   }
 
   Future<Movie> fetchMovieData(String id) async {
-    var movieData = await API().getMovieFromID(id);
+    var movieData = await WatchlistAPI().getMovieFromID(id);
     return movieData;
   }
 
   @override
   Widget build(BuildContext context) {
+    var currentUser = FirebaseAuth.instance.currentUser!.uid;
     return Scaffold(
-      appBar: const MyAppBar(title: "Watchlist"),
+      appBar: const MyAppBar(title: "watchlist"),
       body: Center(
         child: FutureBuilder<List<WatchlistItem>>(
-          future: fetchWatchlist(widget.user),
+          future: fetchWatchlist(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const SizedBox(
@@ -78,7 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => MoviePage(
                                     movieID: data.id.toString(),
-                                    user: widget.user,
+                                    user: currentUser,
                                   ),
                                 ));
                               },

@@ -1,16 +1,20 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:popcorn_v2/api/models.dart';
 
 import 'utils.dart';
 
-class API {
+class WatchlistAPI {
+  // final String BASE_URL_PROD = 'https://popcorn-server-zfqa.onrender.com';
+  final String BASE_URL_PROD = 'http://10.0.2.2:8080';
+  var currentUser = FirebaseAuth.instance.currentUser!.uid;
   Future<List<Movie>> getMoviesFromKeyword(String keyword) async {
     List<Movie> movies = [];
 
     keyword = keyword.replaceAll(' ', '%20');
-    var apiUrl = 'http://127.0.0.1:8080/query=$keyword';
+    var apiUrl = '$BASE_URL_PROD/query=$keyword';
 
     try {
       var response = await http.get(Uri.parse(apiUrl));
@@ -39,7 +43,7 @@ class API {
   Future<Movie> getMovieFromID(String id) async {
     Movie movie;
 
-    var apiUrl = 'http://127.0.0.1:8080/id=$id';
+    var apiUrl = '$BASE_URL_PROD/id=$id';
 
     try {
       var response = await http.get(Uri.parse(apiUrl));
@@ -62,14 +66,15 @@ class API {
     }
   }
 
-  Future<List<WatchlistItem>> getWatchlistForUser(String user) async {
+  Future<List<WatchlistItem>> getWatchlistForUser() async {
     List<WatchlistItem> watchlist;
 
-    var apiUrl = 'http://127.0.0.1:8080/user/watchlist';
+    var apiUrl = '$BASE_URL_PROD/user/watchlist';
+    // var apiUrl = 'http://localhost:8080/user/watchlist';
 
     try {
       var response = await http.post(Uri.parse(apiUrl),
-          body: jsonEncode(<String, String>{"username": user}));
+          body: jsonEncode(<String, String>{"username": currentUser}));
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -96,17 +101,19 @@ class API {
     }
   }
 
-  Future<void> addToWatchlist(int movieID, String user) async {
-    var apiUrl = 'http://127.0.0.1:8080/user/watchlist/add';
+  Future<void> addToWatchlist(int movieID) async {
+    var apiUrl = '$BASE_URL_PROD/user/watchlist/add';
 
     bool isAlreadyAdded =
-        await WatchlistUtils().checkIfAlreadyOnWatchlist(movieID, user);
+        await WatchlistUtils().checkIfAlreadyOnWatchlist(movieID);
 
     if (!isAlreadyAdded) {
       try {
         var response = await http.put(Uri.parse(apiUrl),
-            body: jsonEncode(
-                <String, dynamic>{"username": user, "movieID": movieID}));
+            body: jsonEncode(<String, dynamic>{
+              "username": FirebaseAuth.instance.currentUser!.uid,
+              "movieID": movieID
+            }));
 
         if (response.statusCode == 201) {
           return;
@@ -123,13 +130,13 @@ class API {
     }
   }
 
-  Future<void> removeFromWatchlist(int movieID, String user) async {
-    var apiUrl = 'http://127.0.0.1:8080/user/watchlist';
+  Future<void> removeFromWatchlist(int movieID) async {
+    var apiUrl = '$BASE_URL_PROD/user/watchlist';
 
     try {
       var response = await http.delete(Uri.parse(apiUrl),
           body: jsonEncode(
-              <String, dynamic>{"username": user, "movieID": movieID}));
+              <String, dynamic>{"username": currentUser, "movieID": movieID}));
 
       if (response.statusCode == 200) {
         return;
