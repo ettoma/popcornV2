@@ -36,6 +36,9 @@ TODO
 .pub/
 /build/
 
+firebase.json
+.firebaserc
+
 service_account_key.json
 *.env
 # Symbolication related
