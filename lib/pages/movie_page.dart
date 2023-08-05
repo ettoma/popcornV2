@@ -87,7 +87,7 @@ class _MoviePageState extends State<MoviePage> {
                               ? DecorationImage(
                                   image: NetworkImage(
                                       'https://image.tmdb.org/t/p/w500${data.posterPath}'),
-                                  fit: BoxFit.fill)
+                                  fit: BoxFit.fitHeight)
                               : const DecorationImage(
                                   image: AssetImage("assets/no-results.png"),
                                   scale: 5)),
@@ -150,6 +150,64 @@ class _MoviePageState extends State<MoviePage> {
                         ),
                       ],
                     ),
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white10,
+                              borderRadius: BorderRadius.circular(8)),
+                          margin: const EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(25),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(Icons.star_rate_rounded,
+                                          color: Colors.amberAccent),
+                                      const SizedBox(
+                                        width: 7,
+                                      ),
+                                      Text(
+                                          '${data.voteAverage} (${data.voteCount})',
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold)),
+                                    ],
+                                  ),
+                                  data.releaseDate != ''
+                                      ? Text(
+                                          'Year: ${data.releaseDate?.substring(0, 4)}',
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      : const Text('Year: n/a',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(top: 15),
+                                child: Text('${data.overview}',
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold)),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:popcorn_v2/api/watchlist_api.dart';
 import 'package:popcorn_v2/components/app_bar.dart';
@@ -29,7 +30,6 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      // maintainBottomViewPadding: true,
       child: Scaffold(
         appBar: const MyAppBar(title: 'popcorn 🍿'),
         body: Padding(

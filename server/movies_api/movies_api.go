@@ -17,7 +17,6 @@ import (
 func GetMovieFromId(id string) *models.MovieDetails {
 	var BASE_URL = os.Getenv("MOVIEDB_BASE_URL")
 
-	fmt.Print("base url: ", BASE_URL)
 	var start = time.Now()
 	var response *models.MovieDetails
 	queryUrl := fmt.Sprintf("%s/movie/%s", BASE_URL, id)

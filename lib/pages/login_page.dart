@@ -26,10 +26,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     void confirmAndPushPage() {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("logged in as ${_emailController.text}"),
-        backgroundColor: Colors.grey.withOpacity(0.5),
-      ));
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const PageSwitch()));
     }

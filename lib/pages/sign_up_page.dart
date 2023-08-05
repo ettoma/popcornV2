@@ -29,10 +29,6 @@ class _SignUpPageState extends State<SignUpPage> {
         var isSuccess = await UserAPI().createUser(email, password);
 
         void confirmAndPushPage() async {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("logged in as $email"),
-            backgroundColor: Colors.grey.withOpacity(0.5),
-          ));
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => const PageSwitch()));
         }

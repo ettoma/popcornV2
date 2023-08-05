@@ -17,22 +17,38 @@ class _HomepageState extends State<AccountPage> {
     return SafeArea(
       child: Scaffold(
         appBar: const MyAppBar(title: 'my account 🤖'),
-        body: Column(children: [
-          IconButton(
-            onPressed: () async {
-              // print(await FirebaseAuth.instance.currentUser!
-              //     .getIdTokenResult(true));
-              // await FirebaseAuth.instance.currentUser!
-              //     .updateDisplayName("my name");
-              // print(FirebaseAuth.instance.currentUser?.displayName);
-              FirebaseAuth.instance.signOut();
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => LoginPage()));
-            },
-            icon: Icon(Icons.logout_rounded),
-            color: Colors.white,
-          )
-        ]),
+        body: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Card(
+              color: Colors.amberAccent,
+              elevation: 2,
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    Text("Currently logged in as: "),
+                    Text(
+                      FirebaseAuth.instance.currentUser!.email!,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            TextButton(
+              child: Text(
+                "log out",
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () async {
+                FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => LoginPage()));
+              },
+            )
+          ]),
+        ),
       ),
     );
   }

@@ -7,15 +7,14 @@ class UserAPI {
   final String BASE_URL_PROD = 'http://10.0.2.2:8080';
 
   Future<bool> addUser(String email, String password) async {
-    var emailNorm = email.toLowerCase();
-    emailNorm = emailNorm.trim();
+    var emailNorm = email.toLowerCase().trim();
 
     var apiUrl = '$BASE_URL_PROD/users/signup';
 
     try {
       var response = await http.post(Uri.parse(apiUrl),
           body: jsonEncode(
-              <String, String>{"email": email, "password": password}));
+              <String, String>{"email": emailNorm, "password": password}));
 
       var data = json.decode(response.body);
 
