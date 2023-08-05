@@ -28,7 +28,7 @@ func main() {
 	}
 
 	//* initialise server
-	PORT := ":8080"
+	PORT := ":11111"
 	r := mux.NewRouter()
 
 	r.Use(middlewares.LoggingMiddleware)

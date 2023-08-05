@@ -7,8 +7,8 @@ import 'package:popcorn_v2/api/models.dart';
 import 'utils.dart';
 
 class WatchlistAPI {
-  // final String BASE_URL_PROD = 'https://popcorn-server-zfqa.onrender.com';
-  final String BASE_URL_PROD = 'http://localhost:8080';
+  final String BASE_URL_PROD = 'https://popcorn-server-zfqa.onrender.com';
+  // final String BASE_URL_PROD = 'http://localhost:8080';
 
   var currentUser = FirebaseAuth.instance.currentUser!.uid;
   Future<List<Movie>> getMoviesFromKeyword(String keyword) async {
