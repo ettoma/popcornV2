@@ -42,18 +42,6 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
 
-    void logInWithGoogle() async {
-      if (!context.mounted) {
-        return;
-      }
-
-      var isLoggedIn = await UserAPI().signInWithGoogle();
-
-      if (isLoggedIn) {
-        confirmAndPushPage();
-      }
-    }
-
     return SafeArea(
         child: Scaffold(
       appBar: const MyAppBar(
@@ -74,10 +62,13 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const Padding(
                     padding: EdgeInsets.all(20.0),
-                    child: Image(
-                      image: AssetImage("cinema.png"),
-                      width: 200,
-                      height: 200,
+                    child: Icon(
+                      Icons.notes_rounded,
+                      size: 150.00,
+                      color: Colors.white,
+                      // image: AssetImage("cinema.png"),
+                      // width: 200,
+                      // height: 200,
                     ),
                   ),
                   Column(
@@ -161,12 +152,6 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          logInWithGoogle();
-                        },
-                        child: Icon(Icons.auto_awesome_mosaic_outlined),
-                      )
                     ],
                   ),
                 ],
