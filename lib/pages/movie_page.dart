@@ -56,24 +56,41 @@ class _MoviePageState extends State<MoviePage> {
           builder: (BuildContext context) {
             return Dialog(
               child: AlertDialog(
-                title: Text("Rate this movie"),
+                title: const Text(
+                  "Rate this movie",
+                  style: TextStyle(color: Colors.white),
+                ),
                 content: TextFormField(
                   keyboardType: TextInputType.number,
                   controller: ratingController,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(
+                      color: Colors.amberAccent, fontWeight: FontWeight.bold),
                 ),
                 actions: [
                   TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: Text("cancel")),
+                      child: const Text("cancel")),
                   TextButton(
                       onPressed: () async {
-                        await WatchlistAPI().rateMovieOnWatchlist(
-                            movieID, num.parse(ratingController.text));
-                        setState(() {});
-                        Navigator.pop(context);
+                        double? rating = double.tryParse(ratingController.text);
+
+                        switch (rating) {
+                          case null:
+                            return;
+                          case > 10:
+                            return;
+                          case <= 0:
+                            return;
+                          case < 10:
+                            await WatchlistAPI().rateMovieOnWatchlist(
+                                movieID, double.parse(ratingController.text));
+                            setState(() {});
+                            Navigator.pop(context);
+                          default:
+                            return;
+                        }
                       },
-                      child: Text("ok"))
+                      child: const Text("ok"))
                 ],
               ),
             );
@@ -100,7 +117,10 @@ class _MoviePageState extends State<MoviePage> {
               // Display the fetched data
               final data = snapshot.data!;
               return Scaffold(
-                appBar: MyAppBar(title: data.title),
+                appBar: MyAppBar(
+                  title: data.title,
+                  leadingButton: true,
+                ),
                 body: SafeArea(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(
