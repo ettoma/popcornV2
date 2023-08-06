@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:popcorn_v2/api/user_api.dart';
 import 'package:popcorn_v2/components/app_bar.dart';
+import 'package:popcorn_v2/pages/login_page.dart';
 import 'package:popcorn_v2/pages/page_switch.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -43,6 +44,7 @@ class _SignUpPageState extends State<SignUpPage> {
       child: Scaffold(
         appBar: const MyAppBar(
           title: "welcome",
+          leadingButton: false,
         ),
         body: Padding(
           padding: const EdgeInsets.all(50.0),
@@ -72,19 +74,35 @@ class _SignUpPageState extends State<SignUpPage> {
                   )),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateColor.resolveWith(
-                          (states) => Colors.amberAccent),
-                    ),
-                    onPressed: () {
-                      signUp(_emailController.text, _passwordController.text,
-                          _passwordConfirmationController.text);
-                    },
-                    child: const Text(
-                      "sign up",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateColor.resolveWith(
+                              (states) => Colors.amberAccent),
+                        ),
+                        onPressed: () {
+                          signUp(
+                              _emailController.text,
+                              _passwordController.text,
+                              _passwordConfirmationController.text);
+                        },
+                        child: const Text(
+                          "sign up",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const LoginPage()));
+                        },
+                        child: const Text(
+                          "log in",
+                          style: TextStyle(color: Colors.white54),
+                        ))
+                  ],
+                ),
               ),
             ],
           ),

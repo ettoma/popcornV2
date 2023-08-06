@@ -31,7 +31,9 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const MyAppBar(title: 'popcorn 🍿'),
+        appBar: const MyAppBar(
+          title: 'popcorn 🍿',
+        ),
         body: Padding(
           padding: const EdgeInsets.all(25),
           child: Column(
