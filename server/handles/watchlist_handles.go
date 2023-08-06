@@ -90,3 +90,25 @@ func HandleRemoveMovieFromWatchlist(w http.ResponseWriter, r *http.Request) {
 		utils.WriteResponse(w, "Movie removed", true, http.StatusOK)
 	}
 }
+
+func HandleRateMovieOnWatchlist(w http.ResponseWriter, r *http.Request) {
+	var movieToRate *firestoreDB.MovieToRate
+
+	r.Body = http.MaxBytesReader(w, r.Body, 1048576)
+
+	err := json.NewDecoder(r.Body).Decode(&movieToRate)
+
+	if err != nil {
+		utils.WriteResponse(w, "Request is malformed", false, http.StatusBadRequest)
+	}
+
+	err = firestoreDB.RateMovieOnWatchlist(firestoreDB.ClientDB, movieToRate.MovieID, movieToRate.Username, movieToRate.Rating)
+
+	if err != nil {
+		utils.WriteResponse(w, "Watchlist not found", false, http.StatusNotFound)
+	}
+
+	if err == nil {
+		utils.WriteResponse(w, "Movie rated", true, http.StatusOK)
+	}
+}

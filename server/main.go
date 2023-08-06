@@ -52,6 +52,7 @@ func main() {
 	r.HandleFunc("/user/watchlist", handles.HandleGetUserWatchlist).Methods("POST")
 	r.HandleFunc("/user/watchlist/add", handles.HandleAddMovieToWatchlist).Methods("PUT")
 	r.HandleFunc("/user/watchlist", handles.HandleRemoveMovieFromWatchlist).Methods("DELETE")
+	r.HandleFunc("/user/watchlist/rating", handles.HandleRateMovieOnWatchlist).Methods("POST")
 
 	r.HandleFunc("/users/signup", handles.HandleAddUser).Methods("POST")
 	r.HandleFunc("/users/login", handles.HandleLogIn).Methods("POST")

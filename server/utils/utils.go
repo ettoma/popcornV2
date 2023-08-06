@@ -14,8 +14,8 @@ func WriteResponse(w http.ResponseWriter, value interface{}, success bool, statu
 		StatusCode int         `json:"statusCode"`
 	}
 
-	w.WriteHeader(status)
 	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(status)
 
 	response, err := json.Marshal(jsonResponse{
 		Message:    value,

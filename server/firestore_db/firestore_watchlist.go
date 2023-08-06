@@ -78,3 +78,38 @@ func RemoveMovieFromWatchlist(client *firestore.Client, movieID int, user string
 
 	return nil
 }
+
+func RateMovieOnWatchlist(client *firestore.Client, movieID int, user string, rating float32) error {
+	doc := client.Doc("users/" + user)
+
+	existingWatchlist, err := GetDocuments(client, user)
+
+	utils.HandleError(err)
+
+	var newWatchlist []WatchlistItem
+
+	for _, movie := range existingWatchlist.Watchlist {
+		if movieID == movie.MovieID {
+			newWatchlist = append(newWatchlist, WatchlistItem{
+				MovieID:    movieID,
+				UserRating: rating,
+				Watched:    true,
+			})
+		} else {
+			newWatchlist = append(newWatchlist, movie)
+		}
+	}
+
+	_, err = doc.Update(context.Background(), []firestore.Update{
+		{
+			Path:  "watchlist",
+			Value: newWatchlist,
+		},
+	})
+
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	return nil
+}
