@@ -7,8 +7,8 @@ import 'package:popcorn_v2/api/models.dart';
 import 'utils.dart';
 
 class WatchlistAPI {
-  final String BASE_URL_PROD = 'https://popcorn-server-zfqa.onrender.com';
-  // final String BASE_URL_PROD = 'http://localhost:8080';
+  // final String BASE_URL_PROD = 'https://popcorn-server-zfqa.onrender.com';
+  final String BASE_URL_PROD = 'http://localhost:11111';
 
   var currentUser = FirebaseAuth.instance.currentUser!.uid;
   Future<List<Movie>> getMoviesFromKeyword(String keyword) async {
@@ -138,6 +138,29 @@ class WatchlistAPI {
       var response = await http.delete(Uri.parse(apiUrl),
           body: jsonEncode(
               <String, dynamic>{"username": currentUser, "movieID": movieID}));
+
+      if (response.statusCode == 200) {
+        return;
+      } else if (response.statusCode == 404) {
+        print(response.statusCode);
+      } else {
+        var data = jsonDecode(response.body);
+        print(data);
+      }
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<void> rateMovieOnWatchlist(int movieID, num rating) async {
+    var apiUrl = '$BASE_URL_PROD/user/watchlist/rating';
+    try {
+      var response = await http.post(Uri.parse(apiUrl),
+          body: jsonEncode(<String, dynamic>{
+            "username": currentUser,
+            "movieID": movieID,
+            "rating": rating
+          }));
 
       if (response.statusCode == 200) {
         return;

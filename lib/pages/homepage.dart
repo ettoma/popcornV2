@@ -37,7 +37,12 @@ class _HomepageState extends State<Homepage> {
           child: Column(
             children: [
               SearchBar(
-                trailing: const [Icon(Icons.search_outlined)],
+                trailing: const [
+                  Icon(
+                    Icons.search_outlined,
+                    color: Colors.amberAccent,
+                  )
+                ],
                 textStyle: MaterialStateProperty.all(const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

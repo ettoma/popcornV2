@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 class UserAPI {
-  final String BASE_URL_PROD = 'https://popcorn-server-zfqa.onrender.com';
-  // final String BASE_URL_PROD = 'http://10.0.2.2:8080';
+  // final String BASE_URL_PROD = 'https://popcorn-server-zfqa.onrender.com';
+  final String BASE_URL_PROD = 'http://localhost:11111';
 
   Future<bool> addUser(String email, String password) async {
     var emailNorm = email.toLowerCase().trim();

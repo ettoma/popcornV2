@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:popcorn_v2/api/watchlist_api.dart';
 import 'package:popcorn_v2/api/utils.dart';
@@ -25,6 +27,12 @@ class _MoviePageState extends State<MoviePage> {
     return movieData;
   }
 
+  Future<num> fetchMovieUserRating(String id) async {
+    var rating = await WatchlistUtils().getMovieRating(int.parse(id));
+
+    return rating;
+  }
+
   @override
   Widget build(BuildContext context) {
     void removeFromWatchlist(int movieID) async {
@@ -39,6 +47,37 @@ class _MoviePageState extends State<MoviePage> {
       setState(() {
         isAlreadyOnWatchlist = true;
       });
+    }
+
+    void rateMovie(int movieID) async {
+      TextEditingController ratingController = TextEditingController();
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              child: AlertDialog(
+                title: Text("Rate this movie"),
+                content: TextFormField(
+                  keyboardType: TextInputType.number,
+                  controller: ratingController,
+                  style: TextStyle(color: Colors.white),
+                ),
+                actions: [
+                  TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text("cancel")),
+                  TextButton(
+                      onPressed: () async {
+                        await WatchlistAPI().rateMovieOnWatchlist(
+                            movieID, num.parse(ratingController.text));
+                        setState(() {});
+                        Navigator.pop(context);
+                      },
+                      child: Text("ok"))
+                ],
+              ),
+            );
+          });
     }
 
     return SafeArea(
@@ -61,24 +100,6 @@ class _MoviePageState extends State<MoviePage> {
               // Display the fetched data
               final data = snapshot.data!;
               return Scaffold(
-                floatingActionButton: isAlreadyOnWatchlist
-                    ? FloatingActionButton.small(
-                        onPressed: () {
-                          removeFromWatchlist(int.parse(widget.movieID));
-                          setState(() {
-                            isAlreadyOnWatchlist = false;
-                          });
-                        },
-                        child: const Icon(Icons.check),
-                      )
-                    : FloatingActionButton.small(
-                        onPressed: () {
-                          addToWatchlist(int.parse(widget.movieID));
-                          setState(() {
-                            isAlreadyOnWatchlist = true;
-                          });
-                        },
-                        child: const Icon(Icons.add)),
                 appBar: MyAppBar(title: data.title),
                 body: SafeArea(
                   child: SingleChildScrollView(
@@ -107,47 +128,146 @@ class _MoviePageState extends State<MoviePage> {
                                   color: Colors.white10,
                                   borderRadius: BorderRadius.circular(8)),
                               margin: const EdgeInsets.all(5),
-                              padding: const EdgeInsets.all(25),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          const Icon(Icons.star_rate_rounded,
-                                              color: Colors.amberAccent),
-                                          const SizedBox(
-                                            width: 7,
+                              padding: const EdgeInsets.all(20),
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 40,
+                                          child: IconButton(
+                                            onPressed: () {
+                                              if (isAlreadyOnWatchlist) {
+                                                removeFromWatchlist(
+                                                    int.parse(widget.movieID));
+                                              } else {
+                                                addToWatchlist(
+                                                    int.parse(widget.movieID));
+                                              }
+                                            },
+                                            icon: isAlreadyOnWatchlist
+                                                ? const Icon(
+                                                    Icons.check,
+                                                  )
+                                                : const Icon(
+                                                    Icons.add,
+                                                  ),
+                                            color: Colors.white,
                                           ),
-                                          Text(
+                                        ),
+                                        const Text(
+                                          "watchlist",
+                                          style: TextStyle(color: Colors.white),
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(bottom: 10),
+                                          child: Text(
                                               '${data.voteAverage} (${data.voteCount})',
                                               style: const TextStyle(
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold)),
-                                        ],
-                                      ),
-                                      data.releaseDate != ''
-                                          ? Text(
-                                              'Year: ${data.releaseDate?.substring(0, 4)}',
+                                        ),
+                                        const Icon(Icons.star_rate_rounded,
+                                            size: 21, color: Colors.white),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(bottom: 10),
+                                          child: Text(
+                                              data.releaseDate != ''
+                                                  ? '${data.releaseDate?.substring(0, 4)}'
+                                                  : 'n/a',
                                               style: const TextStyle(
                                                   color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            )
-                                          : const Text('Year: n/a',
-                                              style: TextStyle(
-                                                  color: Colors.white,
                                                   fontWeight: FontWeight.bold)),
-                                    ],
-                                  ),
+                                        ),
+                                        const Text(
+                                          "Year",
+                                          style: TextStyle(color: Colors.white),
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        FutureBuilder(
+                                            future: fetchMovieUserRating(
+                                                widget.movieID),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                // Display a loading indicator while waiting for data
+                                                return const Center(
+                                                    child: SizedBox(
+                                                  height: 75,
+                                                  width: 75,
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ));
+                                              } else if (snapshot.hasError) {
+                                                // Display an error message if API call fails
+                                                return Text(
+                                                    'Error: ${snapshot.error}');
+                                              } else if (snapshot.hasData) {
+                                                // Display the fetched data
+                                                final data = snapshot.data!;
+                                                if (data == 0) {
+                                                  return IconButton(
+                                                    onPressed: () {
+                                                      rateMovie(int.parse(
+                                                          widget.movieID));
+                                                    },
+                                                    icon: const Icon(Icons
+                                                        .onetwothree_rounded),
+                                                    color: Colors.white38,
+                                                  );
+                                                } else {
+                                                  return Text(
+                                                    data.toString(),
+                                                    style: const TextStyle(
+                                                        color:
+                                                            Colors.amberAccent,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  );
+                                                }
+                                              }
+                                              return const Text("error");
+                                            }),
+
+                                        // IconButton(
+                                        //   onPressed: () {},
+                                        //   icon: const Icon(
+                                        //       Icons.onetwothree_rounded),
+                                        //   color: Colors.white38,
+                                        // ),
+                                        const Text(
+                                          "my rating",
+                                          style: TextStyle(color: Colors.white),
+                                        )
+                                      ],
+                                    ),
+                                  ]),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white10,
+                                  borderRadius: BorderRadius.circular(8)),
+                              margin: const EdgeInsets.all(5),
+                              padding: const EdgeInsets.all(25),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
                                   Container(
                                     margin: const EdgeInsets.only(top: 15),
                                     child: Text('${data.overview}',

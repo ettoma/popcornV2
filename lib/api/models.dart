@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Movie {
   final int id;
   final String title;
@@ -21,10 +23,10 @@ class Movie {
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
         id: json['id'],
-        title: json['title'],
+        title: utf8.decode(json['title'].toString().codeUnits),
         posterPath: json['poster_path'],
         voteAverage: json['vote_average'],
-        overview: json['overview'],
+        overview: utf8.decode(json['overview'].toString().codeUnits),
         releaseDate: json['release_date'],
         voteCount: json['vote_count'],
         backdropPath: json['backdrop_path']);
