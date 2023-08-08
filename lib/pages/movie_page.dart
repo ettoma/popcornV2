@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:popcorn_v2/api/watchlist_api.dart';
 import 'package:popcorn_v2/api/utils.dart';
@@ -77,10 +75,37 @@ class _MoviePageState extends State<MoviePage> {
 
                         switch (rating) {
                           case null:
-                            return;
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const AlertDialog(
+                                      title: Text(
+                                    "Enter a valid rating",
+                                    style: TextStyle(color: Colors.white),
+                                  ));
+                                });
+
                           case > 10:
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const AlertDialog(
+                                      title: Text(
+                                    "Enter a rating between 1 and 10",
+                                    style: TextStyle(color: Colors.white),
+                                  ));
+                                });
                             return;
                           case <= 0:
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const AlertDialog(
+                                      title: Text(
+                                    "Enter a rating between 1 and 10",
+                                    style: TextStyle(color: Colors.white),
+                                  ));
+                                });
                             return;
                           case < 10:
                             await WatchlistAPI().rateMovieOnWatchlist(

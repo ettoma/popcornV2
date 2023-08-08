@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:popcorn_v2/pages/archive_page.dart';
 import 'package:popcorn_v2/pages/homepage.dart';
 import 'package:popcorn_v2/pages/watchlist_page.dart';
 
@@ -21,6 +22,8 @@ class _PageSwitchState extends State<PageSwitch> {
       case 1:
         return const WatchlistPage();
       case 2:
+        return const ArchivePage();
+      case 3:
         return const AccountPage();
       default:
         return const Homepage();
@@ -55,6 +58,8 @@ class _PageSwitchState extends State<PageSwitch> {
                 label: "home"),
             BottomNavigationBarItem(
                 icon: Icon(Icons.local_movies), label: "watchlist"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.ramen_dining_rounded), label: "archive"),
             BottomNavigationBarItem(
                 icon: Icon(Icons.person_2), label: "profile")
           ],

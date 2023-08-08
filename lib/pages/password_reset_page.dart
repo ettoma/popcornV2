@@ -29,9 +29,6 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               TextFormField(
-                onEditingComplete: () {
-                  print(_formKey.currentState!.validate());
-                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'email is required';
@@ -43,6 +40,8 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                 decoration: const InputDecoration(
                   labelStyle: TextStyle(color: Colors.white70),
                   labelText: 'email',
+                  errorStyle: TextStyle(color: Colors.red),
+                  // errorText: 'email is required',
                 ),
               ),
               TextButton(

@@ -3,53 +3,54 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 class UserAPI {
-  final String BASE_URL_PROD = 'https://popcorn-server-zfqa.onrender.com';
-  // final String BASE_URL_PROD = 'http://localhost:11111';
+  final String baseUrlProd = 'https://popcorn-server-zfqa.onrender.com';
 
   Future<bool> addUser(String email, String password) async {
-    var emailNorm = email.toLowerCase().trim();
-
-    var apiUrl = '$BASE_URL_PROD/users/signup';
+    var normalizedEmail = email.toLowerCase().trim();
+    var apiUrl = '$baseUrlProd/users/signup';
 
     try {
-      var response = await http.post(Uri.parse(apiUrl),
-          body: jsonEncode(
-              <String, String>{"email": emailNorm, "password": password}));
-
-      var data = json.decode(response.body);
+      var response = await http.post(
+        Uri.parse(apiUrl),
+        body: jsonEncode(<String, String>{
+          "email": normalizedEmail,
+          "password": password,
+        }),
+      );
 
       if (response.statusCode == 201) {
         return true;
       } else if (response.statusCode == 404) {
-        print(data["message"]);
         return false;
       }
     } catch (error) {
-      print('Error: $error');
       rethrow;
     }
     return false;
   }
 
-  Future<bool> createUser(String email, password) async {
+  Future<bool> createUser(String email, String password) async {
     try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
       return true;
     } on FirebaseAuthException catch (e) {
-      print(e.message);
+      print(e);
       return false;
     }
   }
 
-  Future<bool> signInWithEmailPassword(String email, password) async {
+  Future<bool> signInWithEmailPassword(String email, String password) async {
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
       return true;
     } on FirebaseAuthException catch (e) {
-      print(e.message);
+      print(e);
       return false;
     }
   }
@@ -59,7 +60,7 @@ class UserAPI {
       await FirebaseAuth.instance.signInWithProvider(GoogleAuthProvider());
       return true;
     } on FirebaseAuthException catch (e) {
-      print(e.message);
+      print(e);
       return false;
     }
   }
@@ -69,7 +70,7 @@ class UserAPI {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       return true;
     } on FirebaseAuthException catch (e) {
-      print(e.message);
+      print(e);
       return false;
     }
   }
