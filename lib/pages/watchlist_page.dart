@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:popcorn_v2/api/watchlist_api.dart';
 import 'package:popcorn_v2/api/models.dart';
 import 'package:popcorn_v2/components/app_bar.dart';
+import 'package:popcorn_v2/main.dart';
 
 import 'movie_page.dart';
 
@@ -66,16 +67,21 @@ class _ProfilePageState extends State<WatchlistPage> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const CircularProgressIndicator(
-                              color: Colors.white,
-                            );
+                            return const SizedBox(
+                                width: 30,
+                                height: 30,
+                                child: CircularProgressIndicator());
                           } else if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
+                            return Text(
+                              'Error: ${snapshot.error}',
+                              style: const TextStyle(color: Colors.white),
+                            );
                           } else if (snapshot.hasData) {
                             final data = snapshot.data!;
                             return GestureDetector(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
+                                navigatorKey.currentState!
+                                    .push(MaterialPageRoute(
                                   builder: (context) => MoviePage(
                                     movieID: data.id.toString(),
                                     user: currentUser,

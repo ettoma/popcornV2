@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:popcorn_v2/api/user_api.dart';
 import 'package:popcorn_v2/components/app_bar.dart';
+import 'package:popcorn_v2/main.dart';
+
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
 class PasswordResetPage extends StatefulWidget {
   const PasswordResetPage({super.key});
@@ -15,7 +18,10 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: const MyAppBar(title: "forgot password?"),
+      appBar: const MyAppBar(
+        title: "forgot password?",
+        leadingButton: true,
+      ),
       body: Padding(
           padding: const EdgeInsets.all(50),
           child: Column(
@@ -23,6 +29,15 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               TextFormField(
+                onEditingComplete: () {
+                  print(_formKey.currentState!.validate());
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'email is required';
+                  }
+                  return null;
+                },
                 style: const TextStyle(color: Colors.amberAccent),
                 controller: _emailController,
                 decoration: const InputDecoration(
@@ -35,7 +50,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                     var isSent =
                         await UserAPI().resetPassword(_emailController.text);
                     if (isSent) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      scaffoldMessengerKey.currentState!.showSnackBar(SnackBar(
                         content: Text(
                             "password reset email sent to ${_emailController.text}"),
                         backgroundColor: Colors.grey.withOpacity(0.5),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:popcorn_v2/api/watchlist_api.dart';
 import 'package:popcorn_v2/api/utils.dart';
 import 'package:popcorn_v2/components/app_bar.dart';
+import 'package:popcorn_v2/main.dart';
 
 import '../api/models.dart';
 
@@ -85,7 +86,7 @@ class _MoviePageState extends State<MoviePage> {
                             await WatchlistAPI().rateMovieOnWatchlist(
                                 movieID, double.parse(ratingController.text));
                             setState(() {});
-                            Navigator.pop(context);
+                            navigatorKey.currentState!.pop();
                           default:
                             return;
                         }
