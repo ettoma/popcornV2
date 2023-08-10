@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:popcorn_v2/api/watchlist_api.dart';
 import 'package:popcorn_v2/components/app_bar.dart';
 import 'package:popcorn_v2/components/movie_tile.dart';
+import 'package:provider/provider.dart';
 
 import '../api/models.dart';
+import '../global/provider.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -25,6 +27,14 @@ class _HomepageState extends State<Homepage> {
     setState(() {
       fetchedMovies = data;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    context
+        .read<WatchlistProvider>()
+        .getWatchlist(FirebaseAuth.instance.currentUser!.uid);
   }
 
   @override

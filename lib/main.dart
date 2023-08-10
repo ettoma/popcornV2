@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:popcorn_v2/global/provider.dart';
 import 'package:popcorn_v2/pages/login_page.dart';
+import 'package:provider/provider.dart';
 
 import 'firebase/firebase_options.dart';
 
@@ -13,7 +15,15 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const App());
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => WatchlistProvider()),
+      ],
+      child: const App(),
+    ),
+  );
 }
 
 class App extends StatelessWidget {
