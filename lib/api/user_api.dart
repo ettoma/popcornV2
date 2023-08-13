@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
+import '../global/watchlist_provider.dart';
+
 class UserAPI {
   final String baseUrlProd = 'https://popcorn-server-zfqa.onrender.com';
 
@@ -48,6 +50,7 @@ class UserAPI {
         email: email,
         password: password,
       );
+      WatchlistProvider().getWatchlistForUser();
       return true;
     } on FirebaseAuthException catch (e) {
       print(e);

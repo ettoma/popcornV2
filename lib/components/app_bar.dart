@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const MyAppBar({super.key, required this.title, this.leadingButton});
+class PopcornAppBar extends StatefulWidget implements PreferredSizeWidget {
+  const PopcornAppBar({super.key, required this.title, this.leadingButton});
 
   final String title;
   final bool? leadingButton;
@@ -10,10 +10,10 @@ class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(50);
 
   @override
-  State<MyAppBar> createState() => _MyAppBarState();
+  State<PopcornAppBar> createState() => _PopcornAppBarState();
 }
 
-class _MyAppBarState extends State<MyAppBar> {
+class _PopcornAppBarState extends State<PopcornAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(

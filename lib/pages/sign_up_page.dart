@@ -42,7 +42,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: const MyAppBar(
+        appBar: const PopcornAppBar(
           title: "welcome",
           leadingButton: false,
         ),

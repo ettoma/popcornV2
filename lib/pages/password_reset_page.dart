@@ -18,7 +18,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: const MyAppBar(
+      appBar: const PopcornAppBar(
         title: "forgot password?",
         leadingButton: true,
       ),

@@ -16,7 +16,7 @@ class _HomepageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const MyAppBar(title: 'my account 🤖'),
+        appBar: const PopcornAppBar(title: 'my account 🤖'),
         body: Padding(
           padding: const EdgeInsets.all(25.0),
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [

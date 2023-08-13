@@ -1,8 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../global/watchlist_provider.dart';
 import 'watchlist_api.dart';
 
 class WatchlistUtils {
-  Future<bool> checkIfAlreadyOnWatchlist(int movieID) async {
-    var watchlist = await WatchlistAPI().getWatchlistForUser();
+  bool checkIfAlreadyOnWatchlist(int movieID, BuildContext context) {
+    var watchlist = context.read<WatchlistProvider>().watchlist;
 
     for (var movie in watchlist) {
       if (movie.movieID == movieID) {
@@ -12,8 +16,8 @@ class WatchlistUtils {
     return false;
   }
 
-  Future<num> getMovieRating(int movieID) async {
-    var watchlist = await WatchlistAPI().getWatchlistForUser();
+  num getMovieRating(int movieID, BuildContext context) {
+    var watchlist = context.read<WatchlistProvider>().watchlist;
 
     for (var movie in watchlist) {
       if (movie.movieID == movieID) {

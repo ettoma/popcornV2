@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:popcorn_v2/pages/archive_page.dart';
 import 'package:popcorn_v2/pages/homepage.dart';
-import 'package:popcorn_v2/pages/watchlist_page.dart';
+import 'package:popcorn_v2/pages/watchlist.dart';
 
 import 'account_page.dart';
 

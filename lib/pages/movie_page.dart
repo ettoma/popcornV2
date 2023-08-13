@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:popcorn_v2/api/watchlist_api.dart';
 import 'package:popcorn_v2/api/utils.dart';
 import 'package:popcorn_v2/components/app_bar.dart';
+import 'package:popcorn_v2/global/watchlist_provider.dart';
 import 'package:popcorn_v2/main.dart';
+import 'package:provider/provider.dart';
 
 import '../api/models.dart';
 
@@ -18,16 +20,9 @@ class MoviePage extends StatefulWidget {
 
 class _MoviePageState extends State<MoviePage> {
   bool isAlreadyOnWatchlist = false;
-  Future<Movie> fetchMovieData(String id) async {
-    var movieData = await WatchlistAPI().getMovieFromID(id);
-    isAlreadyOnWatchlist = await WatchlistUtils()
-        .checkIfAlreadyOnWatchlist(int.parse(widget.movieID));
-
-    return movieData;
-  }
 
   Future<num> fetchMovieUserRating(String id) async {
-    var rating = await WatchlistUtils().getMovieRating(int.parse(id));
+    var rating = await WatchlistUtils().getMovieRating(int.parse(id), context);
 
     return rating;
   }
@@ -35,14 +30,22 @@ class _MoviePageState extends State<MoviePage> {
   @override
   Widget build(BuildContext context) {
     void removeFromWatchlist(int movieID) async {
-      await WatchlistAPI().removeFromWatchlist(movieID);
+      await context.read<WatchlistProvider>().removeFromWatchlist(movieID);
       setState(() {
         isAlreadyOnWatchlist = false;
       });
     }
 
+    Future<Movie> fetchMovieData(String id) async {
+      isAlreadyOnWatchlist = WatchlistUtils()
+          .checkIfAlreadyOnWatchlist(int.parse(widget.movieID), context);
+
+      var movieData = await WatchlistAPI().getMovieFromID(id);
+      return movieData;
+    }
+
     void addToWatchlist(int movieID) async {
-      await WatchlistAPI().addToWatchlist(movieID);
+      await context.read<WatchlistProvider>().addToWatchlist(movieID, context);
       setState(() {
         isAlreadyOnWatchlist = true;
       });
@@ -107,9 +110,9 @@ class _MoviePageState extends State<MoviePage> {
                                   ));
                                 });
                             return;
-                          case < 10:
-                            await WatchlistAPI().rateMovieOnWatchlist(
-                                movieID, double.parse(ratingController.text));
+                          case <= 10:
+                            await WatchlistAPI().rateMovieOnWatchlist(movieID,
+                                double.parse(ratingController.text), context);
                             setState(() {});
                             navigatorKey.currentState!.pop();
                           default:
@@ -143,7 +146,7 @@ class _MoviePageState extends State<MoviePage> {
               // Display the fetched data
               final data = snapshot.data!;
               return Scaffold(
-                appBar: MyAppBar(
+                appBar: PopcornAppBar(
                   title: data.title,
                   leadingButton: true,
                 ),
