@@ -59,58 +59,64 @@ class _WatchlistPageState extends State<WatchlistPage> {
                                 } else {
                                   if (snapshot.hasData) {
                                     final data = snapshot.data!;
-                                    return GestureDetector(
-                                      onTap: () {
-                                        navigatorKey.currentState!
-                                            .push(MaterialPageRoute(
-                                          builder: (context) => MoviePage(
-                                            movieID: data.id.toString(),
-                                            user: FirebaseAuth
-                                                .instance.currentUser!.uid,
-                                          ),
-                                        ));
+                                    return Dismissible(
+                                      key: Key(data.id.toString()),
+                                      onDismissed: (direction) => {
+                                        watchlist.removeFromWatchlist(data.id)
                                       },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: Colors.white10,
-                                        ),
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 5),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 5),
-                                        child: ListTile(
-                                          leading: Text(
-                                            data.title.substring(0, 1),
-                                            style: const TextStyle(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          navigatorKey.currentState!
+                                              .push(MaterialPageRoute(
+                                            builder: (context) => MoviePage(
+                                              movieID: data.id.toString(),
+                                              user: FirebaseAuth
+                                                  .instance.currentUser!.uid,
+                                            ),
+                                          ));
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: Colors.white10,
+                                          ),
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 5),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 5),
+                                          child: ListTile(
+                                            leading: Text(
+                                              data.title.substring(0, 1),
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 24),
+                                            ),
+                                            trailing: const Icon(
+                                              Icons.arrow_forward_ios,
+                                              color: Colors.amberAccent,
+                                            ),
+                                            title: Text(
+                                              data.title,
+                                              style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 24),
-                                          ),
-                                          trailing: const Icon(
-                                            Icons.arrow_forward_ios,
-                                            color: Colors.amberAccent,
-                                          ),
-                                          title: Text(
-                                            data.title,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                          ),
-                                          subtitle: Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.star_rate_rounded,
-                                                color: Colors.amber,
-                                              ),
-                                              Text(
-                                                "${data.voteAverage} (${data.voteCount})",
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            ],
+                                            subtitle: Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.star_rate_rounded,
+                                                  color: Colors.amber,
+                                                ),
+                                                Text(
+                                                  "${data.voteAverage} (${data.voteCount})",
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),

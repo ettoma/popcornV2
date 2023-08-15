@@ -4,6 +4,7 @@ import 'package:popcorn_v2/api/user_api.dart';
 import 'package:popcorn_v2/api/watchlist_api.dart';
 import 'package:popcorn_v2/components/app_bar.dart';
 import 'package:popcorn_v2/global/watchlist_provider.dart';
+import 'package:popcorn_v2/main.dart';
 import 'package:popcorn_v2/pages/page_switch.dart';
 import 'package:popcorn_v2/pages/password_reset_page.dart';
 import 'package:popcorn_v2/pages/sign_up_page.dart';
@@ -31,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
     void confirmAndPushPage() async {
       await context.read<WatchlistProvider>().getWatchlistForUser();
 
-      Navigator.of(context).pushReplacement(
+      Navigator.of(navigatorKey.currentContext!).pushReplacement(
           MaterialPageRoute(builder: (context) => const PageSwitch()));
     }
 
