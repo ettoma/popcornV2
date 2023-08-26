@@ -111,10 +111,10 @@ class _MoviePageState extends State<MoviePage> {
                                 });
                             return;
                           case <= 10:
-                            await WatchlistAPI().rateMovieOnWatchlist(movieID,
-                                double.parse(ratingController.text), context);
+                            await WatchlistAPI().rateMovieOnWatchlist(
+                                movieID, double.parse(ratingController.text));
                             setState(() {});
-                            navigatorKey.currentState!.pop();
+                            Navigator.of(context).pop();
                           default:
                             return;
                         }
@@ -247,69 +247,77 @@ class _MoviePageState extends State<MoviePage> {
                                   ),
                                   Column(
                                     children: [
-                                      FutureBuilder(
-                                          future: fetchMovieUserRating(
-                                              widget.movieID),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              // Display a loading indicator while waiting for data
-                                              return const Center(
-                                                  child: SizedBox(
-                                                height: 75,
-                                                width: 75,
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              ));
-                                            } else if (snapshot.hasError) {
-                                              // Display an error message if API call fails
-                                              return Text(
-                                                  'Error: ${snapshot.error}');
-                                            } else if (snapshot.hasData) {
-                                              // Display the fetched data
-                                              final data = snapshot.data!;
-                                              if (data == 0) {
-                                                return IconButton(
-                                                  onPressed: () {
-                                                    rateMovie(int.parse(
-                                                        widget.movieID));
-                                                  },
-                                                  icon: const Icon(Icons
-                                                      .onetwothree_rounded),
-                                                  color: Colors.white38,
-                                                );
-                                              } else {
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    rateMovie(int.parse(
-                                                        widget.movieID));
-                                                  },
-                                                  child: Text(
-                                                    data.toString(),
-                                                    style: const TextStyle(
-                                                        color:
-                                                            Colors.amberAccent,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                );
-                                              }
-                                            }
-                                            return const Text("error");
-                                          }),
-
-                                      // IconButton(
-                                      //   onPressed: () {},
-                                      //   icon: const Icon(
-                                      //       Icons.onetwothree_rounded),
-                                      //   color: Colors.white38,
-                                      // ),
+                                      IconButton(
+                                          onPressed: () {
+                                            rateMovie(
+                                                int.parse(widget.movieID));
+                                          },
+                                          icon: const Icon(Icons.note_alt,
+                                              color: Colors.white)),
                                       const Text(
-                                        "my rating",
+                                        "rate",
                                         style: TextStyle(color: Colors.white),
                                       )
                                     ],
-                                  ),
+                                  )
+                                  // Column(
+                                  //   children: [
+                                  //     FutureBuilder(
+                                  //         future: fetchMovieUserRating(
+                                  //             widget.movieID),
+                                  //         builder: (context, snapshot) {
+                                  //           if (snapshot.connectionState ==
+                                  //               ConnectionState.waiting) {
+                                  //             // Display a loading indicator while waiting for data
+                                  //             return const Center(
+                                  //                 child: SizedBox(
+                                  //               height: 75,
+                                  //               width: 75,
+                                  //               child:
+                                  //                   CircularProgressIndicator(),
+                                  //             ));
+                                  //           } else if (snapshot.hasError) {
+                                  //             // Display an error message if API call fails
+                                  //             return Text(
+                                  //                 'Error: ${snapshot.error}');
+                                  //           } else if (snapshot.hasData) {
+                                  //             // Display the fetched data
+                                  //             final data = snapshot.data!;
+                                  //             if (data == 0) {
+                                  //               return IconButton(
+                                  //                 onPressed: () {
+                                  //                   rateMovie(int.parse(
+                                  //                       widget.movieID));
+                                  //                 },
+                                  //                 icon: const Icon(Icons
+                                  //                     .onetwothree_rounded),
+                                  //                 color: Colors.white38,
+                                  //               );
+                                  //             } else {
+                                  //               return GestureDetector(
+                                  //                 onTap: () {
+                                  //                   rateMovie(int.parse(
+                                  //                       widget.movieID));
+                                  //                 },
+                                  //                 child: Text(
+                                  //                   data.toString(),
+                                  //                   style: const TextStyle(
+                                  //                       color:
+                                  //                           Colors.amberAccent,
+                                  //                       fontWeight:
+                                  //                           FontWeight.bold),
+                                  //                 ),
+                                  //               );
+                                  //             }
+                                  //           }
+                                  //           return const Text("error");
+                                  //         }),
+                                  //     const Text(
+                                  //       "my rating",
+                                  //       style: TextStyle(color: Colors.white),
+                                  //     )
+                                  //   ],
+                                  // ),
                                 ]),
                           ),
                           Container(

@@ -33,18 +33,19 @@ class _WatchlistPageState extends State<WatchlistPage> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("rebuilding: ");
     return Consumer<WatchlistProvider>(builder: (context, watchlist, child) {
       return SafeArea(
           child: Scaffold(
               appBar: const PopcornAppBar(title: "watchlist"),
               body: Center(
-                child: watchlist.watchlist.isEmpty
+                child: watchlist.moviesToWatch.isEmpty
                     ? const Text("add your first movie now",
                         style: TextStyle(color: Colors.white))
                     : ListView.builder(
-                        itemCount: watchlist.watchlist.length,
+                        itemCount: watchlist.moviesToWatch.length,
                         itemBuilder: (context, index) {
-                          var movie = watchlist.watchlist[index];
+                          var movie = watchlist.moviesToWatch[index];
                           return FutureBuilder<Movie>(
                               future: fetchMovieData(movie.movieID.toString()),
                               builder: (context, snapshot) {

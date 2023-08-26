@@ -4,14 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:popcorn_v2/api/models.dart';
-import 'package:popcorn_v2/global/watchlist_provider.dart';
-import 'package:provider/provider.dart';
 
+import '../global/watchlist_provider.dart';
 import 'utils.dart';
 
 class WatchlistAPI {
-  // final String BASE_URL_PROD = 'https://popcorn-server-zfqa.onrender.com';
-  final String BASE_URL_PROD = 'http://localhost:11111';
+  final String BASE_URL_PROD = 'https://popcorn-server-zfqa.onrender.com';
+  // final String BASE_URL_PROD = 'http://localhost:11111';
 
   var currentUser = FirebaseAuth.instance.currentUser!.uid;
   Future<List<Movie>> getMoviesFromKeyword(String keyword) async {
@@ -109,7 +108,7 @@ class WatchlistAPI {
     var apiUrl = '$BASE_URL_PROD/user/watchlist/add';
 
     bool isAlreadyAdded =
-        await WatchlistUtils().checkIfAlreadyOnWatchlist(movieID, context);
+        WatchlistUtils().checkIfAlreadyOnWatchlist(movieID, context);
 
     if (!isAlreadyAdded) {
       try {
@@ -155,8 +154,7 @@ class WatchlistAPI {
     }
   }
 
-  Future<void> rateMovieOnWatchlist(
-      int movieID, num rating, BuildContext context) async {
+  Future<void> rateMovieOnWatchlist(int movieID, num rating) async {
     var apiUrl = '$BASE_URL_PROD/user/watchlist/rating';
     try {
       var response = await http.post(Uri.parse(apiUrl),
@@ -167,7 +165,8 @@ class WatchlistAPI {
           }));
 
       if (response.statusCode == 200) {
-        await context.read<WatchlistProvider>().getWatchlistForUser();
+        // await WatchlistProvider().addToWatchedMovies(movieID);
+        await WatchlistProvider().getWatchlistForUser();
         return;
       } else if (response.statusCode == 404) {
         print(response.statusCode);

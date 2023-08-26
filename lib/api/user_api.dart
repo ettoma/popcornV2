@@ -51,6 +51,7 @@ class UserAPI {
         password: password,
       );
       WatchlistProvider().getWatchlistForUser();
+      // WatchlistProvider().getWatchedMovies();
       return true;
     } on FirebaseAuthException catch (e) {
       print(e);
