@@ -3,8 +3,6 @@ import 'package:popcorn_v2/api/user_api.dart';
 import 'package:popcorn_v2/components/app_bar.dart';
 import 'package:popcorn_v2/main.dart';
 
-final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
 class PasswordResetPage extends StatefulWidget {
   const PasswordResetPage({super.key});
 

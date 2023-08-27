@@ -9,6 +9,8 @@ import 'firebase/firebase_options.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
+final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+final GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

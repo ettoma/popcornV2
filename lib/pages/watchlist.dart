@@ -122,7 +122,8 @@ class _WatchlistPageState extends State<WatchlistPage> {
                                       ),
                                     );
                                   } else {
-                                    return Text("no data from the snapshot");
+                                    return const Text(
+                                        "no data from the snapshot");
                                   }
                                 }
                               });

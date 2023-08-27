@@ -103,16 +103,36 @@ class _ArchivePageState extends State<ArchivePage> {
                                           ),
                                         ),
                                         subtitle: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           children: [
-                                            const Icon(
-                                              Icons.star_rate_rounded,
-                                              color: Colors.amber,
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.star_rate_rounded,
+                                                  color: Colors.amber,
+                                                ),
+                                                Text(
+                                                  "${movie.userRating}",
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ],
                                             ),
-                                            Text(
-                                              "${movie.userRating} (${data.voteAverage})",
-                                              style: const TextStyle(
-                                                  color: Colors.white),
-                                            ),
+                                            const SizedBox(width: 25),
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.people_alt_rounded,
+                                                  color: Colors.amberAccent,
+                                                ),
+                                                Text(
+                                                  " ${data.voteAverage}",
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                )
+                                              ],
+                                            )
                                           ],
                                         ),
                                       ),
@@ -120,7 +140,7 @@ class _ArchivePageState extends State<ArchivePage> {
                                   ),
                                 );
                               } else {
-                                return Text("no data from the snapshot");
+                                return const Text("no data from the snapshot");
                               }
                             }
                           });

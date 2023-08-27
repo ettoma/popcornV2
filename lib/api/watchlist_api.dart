@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:popcorn_v2/api/models.dart';
 
-import '../global/watchlist_provider.dart';
 import 'utils.dart';
 
 class WatchlistAPI {
