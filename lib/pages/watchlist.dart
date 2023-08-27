@@ -33,7 +33,6 @@ class _WatchlistPageState extends State<WatchlistPage> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("rebuilding: ");
     return Consumer<WatchlistProvider>(builder: (context, watchlist, child) {
       return SafeArea(
           child: Scaffold(

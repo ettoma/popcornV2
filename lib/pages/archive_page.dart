@@ -33,7 +33,6 @@ class _ArchivePageState extends State<ArchivePage> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("rebuilding archived movies");
     return Consumer<WatchlistProvider>(builder: (context, watchlist, child) {
       return SafeArea(
         child: Scaffold(
@@ -110,7 +109,7 @@ class _ArchivePageState extends State<ArchivePage> {
                                               color: Colors.amber,
                                             ),
                                             Text(
-                                              "${data.voteAverage} (${data.voteCount})",
+                                              "${movie.userRating} (${data.voteAverage})",
                                               style: const TextStyle(
                                                   color: Colors.white),
                                             ),

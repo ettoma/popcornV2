@@ -31,7 +31,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
         void confirmAndPushPage() async {
           Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const PageSwitch()));
+              MaterialPageRoute(builder: (context) => PageSwitch()));
         }
 
         if (isSuccess) {

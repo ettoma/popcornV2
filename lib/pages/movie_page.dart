@@ -4,6 +4,7 @@ import 'package:popcorn_v2/api/utils.dart';
 import 'package:popcorn_v2/components/app_bar.dart';
 import 'package:popcorn_v2/global/watchlist_provider.dart';
 import 'package:popcorn_v2/main.dart';
+import 'package:popcorn_v2/pages/page_switch.dart';
 import 'package:provider/provider.dart';
 
 import '../api/models.dart';
@@ -22,7 +23,7 @@ class _MoviePageState extends State<MoviePage> {
   bool isAlreadyOnWatchlist = false;
 
   Future<num> fetchMovieUserRating(String id) async {
-    var rating = await WatchlistUtils().getMovieRating(int.parse(id), context);
+    var rating = WatchlistUtils().getMovieRating(int.parse(id), context);
 
     return rating;
   }
@@ -111,10 +112,19 @@ class _MoviePageState extends State<MoviePage> {
                                 });
                             return;
                           case <= 10:
-                            await WatchlistAPI().rateMovieOnWatchlist(
-                                movieID, double.parse(ratingController.text));
-                            setState(() {});
-                            Navigator.of(context).pop();
+                            await context
+                                .read<WatchlistProvider>()
+                                .rateMovieOnWatchlist(movieID, rating);
+                            navigatorKey.currentState!
+                                .pushReplacement(MaterialPageRoute(
+                                    builder: (context) => PageSwitch(
+                                          index: 2,
+                                        )));
+                            scaffoldMessengerKey.currentState!.showSnackBar(
+                                SnackBar(
+                                    content: Text(
+                                        "Rating added: ${rating.toString()}")));
+
                           default:
                             return;
                         }

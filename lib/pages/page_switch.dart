@@ -6,7 +6,9 @@ import 'package:popcorn_v2/pages/watchlist.dart';
 import 'account_page.dart';
 
 class PageSwitch extends StatefulWidget {
-  const PageSwitch({super.key});
+  PageSwitch({super.key, this.index});
+
+  int? index;
 
   @override
   State<PageSwitch> createState() => _PageSwitchState();
@@ -34,10 +36,10 @@ class _PageSwitchState extends State<PageSwitch> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: _buildPageIndex(_currentIndex),
+        body: _buildPageIndex(widget.index ?? _currentIndex),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          currentIndex: _currentIndex,
+          currentIndex: widget.index ?? _currentIndex,
           selectedItemColor: Colors.tealAccent,
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
           unselectedItemColor: Colors.white24,
@@ -46,6 +48,7 @@ class _PageSwitchState extends State<PageSwitch> {
             if (_currentIndex == value) {
               return;
             }
+            widget.index = null;
             setState(() {
               _currentIndex = value;
             });

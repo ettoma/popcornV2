@@ -38,8 +38,20 @@ class WatchlistProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> rateMovieOnWatchlist(int movieID, double rating) async {
+    await WatchlistAPI().rateMovieOnWatchlist(movieID, rating);
+    await getWatchlistForUser();
+    await updateAllMovies();
+    notifyListeners();
+  }
+
   Future<void> addToWatchlist(int movieID, BuildContext context) async {
     await WatchlistAPI().addToWatchlist(movieID, context);
+
+    if (_watchlist.isEmpty) {
+      _watchlist = [];
+    }
+
     _watchlist.add(WatchlistItem(movieID: movieID));
     await updateAllMovies();
     notifyListeners();

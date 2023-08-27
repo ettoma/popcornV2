@@ -9,8 +9,8 @@ import '../global/watchlist_provider.dart';
 import 'utils.dart';
 
 class WatchlistAPI {
-  final String BASE_URL_PROD = 'https://popcorn-server-zfqa.onrender.com';
-  // final String BASE_URL_PROD = 'http://localhost:11111';
+  // final String BASE_URL_PROD = 'https://popcorn-server-zfqa.onrender.com';
+  final String BASE_URL_PROD = 'http://localhost:11111';
 
   var currentUser = FirebaseAuth.instance.currentUser!.uid;
   Future<List<Movie>> getMoviesFromKeyword(String keyword) async {
@@ -156,6 +156,7 @@ class WatchlistAPI {
 
   Future<void> rateMovieOnWatchlist(int movieID, num rating) async {
     var apiUrl = '$BASE_URL_PROD/user/watchlist/rating';
+
     try {
       var response = await http.post(Uri.parse(apiUrl),
           body: jsonEncode(<String, dynamic>{
@@ -165,8 +166,6 @@ class WatchlistAPI {
           }));
 
       if (response.statusCode == 200) {
-        // await WatchlistProvider().addToWatchedMovies(movieID);
-        await WatchlistProvider().getWatchlistForUser();
         return;
       } else if (response.statusCode == 404) {
         print(response.statusCode);

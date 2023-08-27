@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
       await context.read<WatchlistProvider>().getWatchlistForUser();
 
       Navigator.of(navigatorKey.currentContext!).pushReplacement(
-          MaterialPageRoute(builder: (context) => const PageSwitch()));
+          MaterialPageRoute(builder: (context) => PageSwitch()));
     }
 
     void logInWithEmail(String email, password) async {
