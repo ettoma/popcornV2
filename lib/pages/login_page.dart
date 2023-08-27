@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:popcorn_v2/api/user_api.dart';
-import 'package:popcorn_v2/api/watchlist_api.dart';
 import 'package:popcorn_v2/components/app_bar.dart';
 import 'package:popcorn_v2/global/watchlist_provider.dart';
 import 'package:popcorn_v2/main.dart';
@@ -25,6 +24,9 @@ class _LoginPageState extends State<LoginPage> {
   bool isCreated = false;
   bool isObscured = true;
 
+  bool isUsernameError = false;
+  bool isPasswordError = false;
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
@@ -36,8 +38,14 @@ class _LoginPageState extends State<LoginPage> {
           MaterialPageRoute(builder: (context) => PageSwitch()));
     }
 
-    void logInWithEmail(String email, password) async {
+    void logInWithEmail(String email, String password) async {
       if (!context.mounted) {
+        return;
+      }
+
+      bool isValid = loginFormKey.currentState!.validate();
+
+      if (!isValid) {
         return;
       }
 
@@ -77,88 +85,102 @@ class _LoginPageState extends State<LoginPage> {
                       // height: 200,
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      TextFormField(
-                        style: const TextStyle(color: Colors.amberAccent),
-                        controller: _emailController,
-                        decoration: const InputDecoration(
-                          labelStyle: TextStyle(color: Colors.white70),
-                          labelText: 'Username',
+                  Form(
+                    key: loginFormKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        TextFormField(
+                          style: const TextStyle(color: Colors.amberAccent),
+                          controller: _emailController,
+                          autofillHints: const [AutofillHints.email],
+                          decoration: const InputDecoration(
+                            errorStyle: TextStyle(
+                                color: Colors.amber,
+                                fontWeight: FontWeight.bold),
+                            labelStyle: TextStyle(color: Colors.white70),
+                            labelText: 'Username',
+                          ),
+                          validator: (username) => username != null &&
+                                  !EmailValidator.validate(username)
+                              ? "Enter a valid email"
+                              : null,
                         ),
-                        validator: (value) {
-                          if (!EmailValidator.validate(value!)) {
-                            return 'Please enter a valid email address';
-                          }
-                          return null;
-                        },
-                      ),
-                      TextFormField(
-                        style: const TextStyle(color: Colors.amberAccent),
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          labelStyle: const TextStyle(color: Colors.white70),
-                          labelText: 'Password',
-                          suffixIcon: GestureDetector(
-                            child: Icon(
-                              isObscured
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: Colors.white70,
+                        TextFormField(
+                          style: const TextStyle(color: Colors.amberAccent),
+                          controller: _passwordController,
+                          validator: (password) =>
+                              password != null && password.length < 6
+                                  ? "Enter a valid password"
+                                  : null,
+                          decoration: InputDecoration(
+                            errorStyle: const TextStyle(
+                                color: Colors.amber,
+                                fontWeight: FontWeight.bold),
+                            labelStyle: const TextStyle(color: Colors.white70),
+                            labelText: 'Password',
+                            suffixIcon: GestureDetector(
+                              child: Icon(
+                                isObscured
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: Colors.white70,
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  isObscured = !isObscured;
+                                });
+                              },
                             ),
-                            onTap: () {
-                              setState(() {
-                                isObscured = !isObscured;
-                              });
+                          ),
+                          obscureText: isObscured ? true : false,
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      const PasswordResetPage()));
                             },
+                            child: const Text(
+                              "forgot password",
+                              style: TextStyle(color: Colors.white54),
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateColor.resolveWith(
+                                            (states) => Colors.amberAccent),
+                                  ),
+                                  onPressed: () {
+                                    logInWithEmail(_emailController.text,
+                                        _passwordController.text);
+                                  },
+                                  child: const Text(
+                                    "log in",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  )),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignUpPage()));
+                                  },
+                                  child: const Text(
+                                    "sign up",
+                                    style: TextStyle(color: Colors.white54),
+                                  )),
+                            ],
                           ),
                         ),
-                        obscureText: isObscured ? true : false,
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    const PasswordResetPage()));
-                          },
-                          child: const Text(
-                            "forgot password",
-                            style: TextStyle(color: Colors.white54),
-                          )),
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateColor.resolveWith(
-                                          (states) => Colors.amberAccent),
-                                ),
-                                onPressed: () {
-                                  logInWithEmail(_emailController.text,
-                                      _passwordController.text);
-                                },
-                                child: const Text(
-                                  "log in",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SignUpPage()));
-                                },
-                                child: const Text(
-                                  "sign up",
-                                  style: TextStyle(color: Colors.white54),
-                                )),
-                          ],
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
