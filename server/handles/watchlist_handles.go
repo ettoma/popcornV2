@@ -3,7 +3,6 @@ package handles
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	firestoreDB "github.com/ettoma/popcorn_v2/firestore_db"
@@ -60,7 +59,7 @@ func HandleAddMovieToWatchlist(w http.ResponseWriter, r *http.Request) {
 	err = firestoreDB.AddMovieToWatchlist(firestoreDB.ClientDB, movieToAdd.MovieID, movieToAdd.Username)
 
 	if err != nil {
-		log.Println("whops")
+		utils.Logger.Println("whops")
 		utils.WriteResponse(w, "Watchlist not found", false, http.StatusNotFound)
 	}
 

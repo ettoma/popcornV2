@@ -1,14 +1,13 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"net/http"
 	"time"
 
 	firestoreDB "github.com/ettoma/popcorn_v2/firestore_db"
 	"github.com/ettoma/popcorn_v2/handles"
 	"github.com/ettoma/popcorn_v2/middlewares"
+	"github.com/ettoma/popcorn_v2/utils"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -19,12 +18,12 @@ func main() {
 	//* load the API key from env
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatalf("err loading: %v", err)
+		utils.Logger.Fatalf("err loading: %v", err)
 	}
 
 	err = firestoreDB.Initialise()
 	if err != nil {
-		fmt.Println(err)
+		utils.Logger.Println(err)
 	}
 
 	//* initialise server
@@ -57,7 +56,7 @@ func main() {
 	r.HandleFunc("/users/signup", handles.HandleAddUser).Methods("POST")
 	r.HandleFunc("/users/login", handles.HandleLogIn).Methods("POST")
 
-	log.Printf("Server started at: http://localhost%s", PORT)
+	utils.Logger.Printf("Server started at: http://localhost%s \n", PORT)
 
-	log.Fatal(srv.ListenAndServe())
+	utils.Logger.Fatal(srv.ListenAndServe())
 }

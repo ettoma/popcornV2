@@ -2,7 +2,8 @@ package authdb
 
 import (
 	"context"
-	"log"
+
+	"github.com/ettoma/popcorn_v2/utils"
 
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/auth"
@@ -20,13 +21,13 @@ func InitialiseAuthDB() (bool, *auth.Client) {
 
 	app, err := firebase.NewApp(ctx, nil, sa)
 	if err != nil {
-		log.Fatalf("error getting Auth client: %v\n", err)
+		utils.Logger.Fatalf("error getting Auth client: %v\n", err)
 		return false, nil
 	}
 	client, err := app.Auth(ctx)
 	if err != nil {
 
-		log.Fatalf("error getting Auth client: %v\n", err)
+		utils.Logger.Fatalf("error getting Auth client: %v\n", err)
 		return false, nil
 	}
 
@@ -41,10 +42,10 @@ func AddUser(email, password string, client *auth.Client) error {
 		Password(password)
 	u, err := client.CreateUser(context.Background(), params)
 	if err != nil {
-		log.Printf("error creating user: %v\n", err)
+		utils.Logger.Printf("error creating user: %v\n", err)
 		return err
 	}
-	log.Printf("Successfully created user: %v\n", u)
+	utils.Logger.Printf("Successfully created user: %v\n", u)
 
 	return nil
 }
@@ -53,6 +54,6 @@ func LogIn(email, password string, client *auth.Client) error {
 
 	token, err := client.CustomToken(context.Background(), email)
 
-	log.Println(token, err)
+	utils.Logger.Println(token, err)
 	return nil
 }

@@ -28,7 +28,7 @@ func GetMovieFromId(id string) *models.MovieDetails {
 
 	trace := &httptrace.ClientTrace{
 		WroteRequest: func(info httptrace.WroteRequestInfo) {
-			fmt.Printf("Response time: %v\n\n", time.Since(start))
+			fmt.Printf("MovieAPI Response time: %v\n\n", time.Since(start))
 		},
 	}
 
@@ -81,7 +81,7 @@ func GetMoviesFromKeyword(query string) *models.QueryResults {
 		// 	fmt.Printf("Got Conn: %+v\n", connInfo)
 		// },
 		WroteRequest: func(info httptrace.WroteRequestInfo) {
-			fmt.Printf("Response time: %v\n\n", time.Since(start))
+			fmt.Printf("MovieAPI Response time: %v\n\n", time.Since(start))
 		},
 		// WroteHeaders: func() {
 		// 	fmt.Printf("Wrote headers: %v\n", time.Since(start))
@@ -91,7 +91,7 @@ func GetMoviesFromKeyword(query string) *models.QueryResults {
 		// },
 	}
 
-	req.Header.Add("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWRkNjUwNWQ0OTBlZjEyNWIwMzZjYjhlNzQ3YTQ1OCIsInN1YiI6IjY0NzFjNTgzYTE5OWE2MDBiZjI5NjI0NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.S6O7yWHWLYwOOGwpzW2GhxQJrOHxuzWvx_0NGBve21s")
+	req.Header.Add("Authorization", key)
 
 	req = req.WithContext(httptrace.WithClientTrace(req.Context(), trace))
 

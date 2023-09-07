@@ -2,7 +2,6 @@ package utils
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 )
 
@@ -23,7 +22,7 @@ func WriteResponse(w http.ResponseWriter, value interface{}, success bool, statu
 		StatusCode: status,
 	})
 
-	log.Println("success: ", success, "\nstatus: ", status)
+	Logger.Println("success: ", success, "\nstatus: ", status)
 
 	if err != nil {
 		w.Write([]byte(err.Error()))
@@ -35,7 +34,7 @@ func WriteResponse(w http.ResponseWriter, value interface{}, success bool, statu
 
 func HandleError(err error) {
 	if err != nil {
-		log.Printf("%s", err)
+		Logger.Printf("%s", err)
 	}
 
 }

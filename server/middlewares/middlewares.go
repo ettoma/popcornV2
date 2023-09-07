@@ -1,14 +1,15 @@
 package middlewares
 
 import (
-	"log"
 	"net/http"
+
+	"github.com/ettoma/popcorn_v2/utils"
 )
 
 func LoggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		log.Printf("\nURI: %s \nMethod: %s \n", r.RequestURI, r.Method)
+		utils.Logger.Printf("\nURI: %s \nMethod: %s \n", r.RequestURI, r.Method)
 
 		next.ServeHTTP(w, r)
 	})
