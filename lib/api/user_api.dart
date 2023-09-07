@@ -38,8 +38,7 @@ class UserAPI {
         password: password,
       );
       return true;
-    } on FirebaseAuthException catch (e) {
-      print(e);
+    } on FirebaseAuthException {
       return false;
     }
   }
@@ -51,10 +50,8 @@ class UserAPI {
         password: password,
       );
       WatchlistProvider().getWatchlistForUser();
-      // WatchlistProvider().getWatchedMovies();
       return true;
-    } on FirebaseAuthException catch (e) {
-      print(e);
+    } on FirebaseAuthException {
       return false;
     }
   }

@@ -34,9 +34,29 @@ class _SignUpPageState extends State<SignUpPage> {
       }
 
       if (password != passwordConfirmation) {
-        signupFormKey.currentState!.validate();
+        scaffoldMessengerKey.currentState!.showSnackBar(const SnackBar(
+          content: Text("Password does not match"),
+          shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.all(
+                Radius.circular(10.0),
+              )),
+        ));
+        return;
       } else if (password == passwordConfirmation) {
         var isSuccess = await UserAPI().createUser(email, password);
+
+        if (!isSuccess) {
+          scaffoldMessengerKey.currentState!.showSnackBar(const SnackBar(
+            content: Text("Email or password is incorrect"),
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.red),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
+                )),
+          ));
+          return;
+        }
 
         void confirmAndPushPage() async {
           Navigator.of(context).pushReplacement(

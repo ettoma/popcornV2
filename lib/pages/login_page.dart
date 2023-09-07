@@ -51,6 +51,18 @@ class _LoginPageState extends State<LoginPage> {
 
       var isLoggedIn = await UserAPI().signInWithEmailPassword(email, password);
 
+      if (!isLoggedIn) {
+        scaffoldMessengerKey.currentState!.showSnackBar(const SnackBar(
+          content: Text("Email or password is incorrect"),
+          shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.all(
+                Radius.circular(10.0),
+              )),
+        ));
+        return;
+      }
+
       if (isLoggedIn) {
         confirmAndPushPage();
       }
@@ -80,9 +92,6 @@ class _LoginPageState extends State<LoginPage> {
                       Icons.notes_rounded,
                       size: 150.00,
                       color: Colors.white,
-                      // image: AssetImage("cinema.png"),
-                      // width: 200,
-                      // height: 200,
                     ),
                   ),
                   Form(
@@ -186,7 +195,13 @@ class _LoginPageState extends State<LoginPage> {
               ),
             );
           }
-          return const Text("everything else failed ☠️");
+          return const Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 5,
+              color: Colors.amberAccent,
+              strokeCap: StrokeCap.round,
+            ),
+          );
         },
       ),
     ));
