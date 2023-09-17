@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	firestoreDB "github.com/ettoma/popcorn_v2/firestore_db"
+	"github.com/ettoma/popcorn_v2/db"
 	"github.com/ettoma/popcorn_v2/handles"
 	"github.com/ettoma/popcorn_v2/middlewares"
 	"github.com/ettoma/popcorn_v2/utils"
@@ -18,12 +18,14 @@ func main() {
 	//* load the API key from env
 	err := godotenv.Load()
 	if err != nil {
-		utils.Logger.Fatalf("err loading: %v", err)
+		utils.Logger.Fatalf("err loading environment variables: %v", err)
 	}
 
-	err = firestoreDB.Initialise()
+	//* initialise db
+	err = db.Init()
+
 	if err != nil {
-		utils.Logger.Println(err)
+		utils.Logger.Fatalf("err loading database: %v", err)
 	}
 
 	//* initialise server
@@ -60,3 +62,7 @@ func main() {
 
 	utils.Logger.Fatal(srv.ListenAndServe())
 }
+
+// func main() {
+// 	db.Init()
+// }

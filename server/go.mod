@@ -11,7 +11,10 @@ require (
 	google.golang.org/grpc v1.56.2
 )
 
-require github.com/felixge/httpsnoop v1.0.1 // indirect
+require (
+	github.com/felixge/httpsnoop v1.0.1 // indirect
+	github.com/lib/pq v1.10.9 // indirect
+)
 
 require (
 	cloud.google.com/go v0.110.6 // indirect

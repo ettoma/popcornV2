@@ -79,22 +79,25 @@ class WatchlistAPI {
           body: jsonEncode(<String, String>{"username": currentUser}));
 
       if (response.statusCode == 200) {
-        var data = json.decode(response.body);
+        var data = jsonDecode(response.body);
 
         var dataJson = jsonDecode(data["message"]);
 
-        if (dataJson.toString().length == 17) {
-          //! hardcoded value to check if the data is {watchlist: null} Should be polished
+        print(dataJson);
+
+        if (dataJson["watchlist"] == "") {
           return List.empty();
         }
-        watchlist = List<WatchlistItem>.from(
-            dataJson["watchlist"].map((e) => WatchlistItem.fromJson(e)));
+
+        watchlist = List<WatchlistItem>.from(jsonDecode(dataJson["watchlist"])
+            .map((e) => WatchlistItem.fromJson(e)));
 
         return watchlist;
       } else if (response.statusCode == 404) {
         print(response.statusCode);
         return List.empty();
       } else {
+        print(response.body);
         print(response.statusCode);
         return List.empty();
       }
