@@ -26,13 +26,14 @@ func HandleGetUserWatchlist(w http.ResponseWriter, r *http.Request) {
 	watchlist, err = db.GetWatchlistFromDB(user.Username)
 
 	if err != nil {
-		if err.Error() == "User watchlist is empty" {
+		if err.Error() == "User watchlist didn't exist, created a new one" {
 			utils.WriteResponse(
-				w, "User watchlist didn't exist, created a new one", true, http.StatusCreated)
+				w, err.Error(), true, http.StatusCreated)
+			return
 
-		} else {
+		} else if err.Error() == "Error creating or fetching user watchlist" {
 
-			utils.WriteResponse(w, "Error fetching watchlist", false, http.StatusNotFound)
+			utils.WriteResponse(w, err.Error(), false, http.StatusNotFound)
 			return
 		}
 	}

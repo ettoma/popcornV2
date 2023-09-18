@@ -14,37 +14,29 @@ func GetWatchlistFromDB(user string) (models.Watchlist, error) {
 	rows, err := DB.Query(`SELECT * FROM watchlist WHERE id = $1`, user)
 
 	if err != nil {
-		log.Fatal("select: ", err)
+		log.Fatal("select error: ", err)
 	}
 
-	//!! fix error when user signs up for the first time and watchlist doesn't exist
-	// if !rows.Next() {
+	defer rows.Close()
 
-	// 	_, err := DB.Exec(`INSERT INTO watchlist (id, watchlist) VALUES ($1, $2)`, user, "[]")
-
-	// 	if err != nil {
-	// 		utils.Logger.Printf("Error adding user to watchlist: %v", err)
-	// 	}
-	// 	return models.Watchlist{}, errors.New("User watchlist is empty")
-	// } else {
-	for rows.Next() {
-
-		if rows.Err() != nil {
-			log.Fatal("select: ", rows.Err().Error())
-			return models.Watchlist{}, rows.Err()
-		}
-		var w models.Watchlist
-
-		err := rows.Scan(&w.ID, &w.Watchlist)
-
+	if !rows.Next() {
+		// No rows found, handle the case where the watchlist doesn't exist yet
+		_, err := DB.Exec(`INSERT INTO watchlist (id, watchlist) VALUES ($1, $2)`, user, "[]")
 		if err != nil {
-			log.Fatal(err)
+			utils.Logger.Printf("Error creating user watchlist: %v", err)
+			return models.Watchlist{}, errors.New("Error creating user watchlist")
 		}
-		return w, nil
+		return models.Watchlist{}, errors.New("User watchlist didn't exist, created a new one")
 	}
-	// }
 
-	return models.Watchlist{}, nil
+	// Rows found, initialize a Watchlist struct and scan into it
+	var watchlist models.Watchlist
+	err = rows.Scan(&watchlist.ID, &watchlist.Watchlist)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return watchlist, nil
 }
 
 func AddMovieToWatchlist(user string, movieID int) error {
