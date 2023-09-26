@@ -15,3 +15,8 @@ type MovieToAdd struct {
 	Username string `json:"username"`
 	MovieID  int    `json:"movieID"`
 }
+
+type MovieToRemove struct {
+	Username string `json:"username"`
+	MovieID  int    `json:"movieID"`
+}

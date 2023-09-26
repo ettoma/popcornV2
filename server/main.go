@@ -15,7 +15,7 @@ import (
 
 func main() {
 
-	//* load the API key from env
+	//* load the env file
 	err := godotenv.Load()
 	if err != nil {
 		utils.Logger.Fatalf("err loading environment variables: %v", err)

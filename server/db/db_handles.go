@@ -111,9 +111,21 @@ func RemoveMovieFromWatchlist(user string, movieID int) error {
 		return err
 	}
 
-	for _, movie := range watchlistJson {
-		if movie.MovieID != movieID {
-			watchlistJson = append(watchlistJson, movie)
+	if len(watchlistJson) == 0 {
+		utils.Logger.Printf("Tried to remove movie from empty watchlist.\nUser: %s\nMovie: %d", user, movieID)
+		return errors.New("Watchlist is already empty")
+	}
+
+	if len(watchlistJson) == 1 && watchlistJson[0].MovieID == movieID {
+		watchlistJson = []*models.WatchlistItem{}
+
+	} else {
+
+		for _, movie := range watchlistJson {
+
+			if movie.MovieID != movieID {
+				watchlistJson = append(watchlistJson, movie)
+			}
 		}
 	}
 

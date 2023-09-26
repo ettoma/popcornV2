@@ -73,7 +73,7 @@ func HandleAddMovieToWatchlist(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleRemoveMovieFromWatchlist(w http.ResponseWriter, r *http.Request) {
-	var movieToRemove *firestoreDB.MovieToRemove
+	var movieToRemove *models.MovieToRemove
 
 	r.Body = http.MaxBytesReader(w, r.Body, 1048576)
 
@@ -83,10 +83,11 @@ func HandleRemoveMovieFromWatchlist(w http.ResponseWriter, r *http.Request) {
 		utils.WriteResponse(w, "Request is malformed", false, http.StatusBadRequest)
 	}
 
-	err = firestoreDB.RemoveMovieFromWatchlist(firestoreDB.ClientDB, movieToRemove.MovieID, movieToRemove.Username)
+	err = db.RemoveMovieFromWatchlist(movieToRemove.Username, movieToRemove.MovieID)
 
 	if err != nil {
-		utils.WriteResponse(w, "Watchlist not found", false, http.StatusNotFound)
+
+		utils.WriteResponse(w, err.Error(), false, http.StatusNotFound)
 	}
 
 	if err == nil {
