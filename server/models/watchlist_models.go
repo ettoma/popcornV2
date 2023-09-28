@@ -20,3 +20,9 @@ type MovieToRemove struct {
 	Username string `json:"username"`
 	MovieID  int    `json:"movieID"`
 }
+
+type MovieToRate struct {
+	Username string  `json:"username"`
+	MovieID  int     `json:"movieID"`
+	Rating   float32 `json:"rating"`
+}

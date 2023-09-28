@@ -145,3 +145,47 @@ func RemoveMovieFromWatchlist(user string, movieID int) error {
 
 	return nil
 }
+
+func RateMovieOnWatchlist(user string, movieID int, rating float32) error {
+	var watchlistJson []*models.WatchlistItem
+	var updatedWatchlistJson []*models.WatchlistItem
+
+	existingWatchlist, err := GetWatchlistFromDB(user)
+
+	if err != nil {
+		utils.Logger.Println("Error fetching watchlist")
+		return err
+	}
+
+	err = json.Unmarshal([]byte(existingWatchlist.Watchlist), &watchlistJson)
+
+	if err != nil {
+		utils.Logger.Println("Error unmarshalling watchlist: ", err)
+		return err
+	}
+
+	for _, movie := range watchlistJson {
+		if movie.MovieID == movieID {
+			movie.UserRating = rating
+			movie.Watched = true
+			updatedWatchlistJson = append(updatedWatchlistJson, movie)
+		} else {
+			updatedWatchlistJson = append(updatedWatchlistJson, movie)
+		}
+	}
+
+	watchlistDb, err := json.Marshal(updatedWatchlistJson)
+
+	if err != nil {
+		utils.Logger.Println("Error marshalling watchlist: ", err)
+		return err
+	}
+
+	_, err = DB.Exec(`UPDATE watchlist SET watchlist = $1 WHERE id = $2`, watchlistDb, user)
+
+	if err != nil {
+		utils.Logger.Println("Error updating watchlist: ", err)
+		return err
+	}
+	return nil
+}
