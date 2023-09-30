@@ -5,12 +5,14 @@ import (
 	"net/http"
 
 	authdb "github.com/ettoma/popcorn_v2/auth_db"
+	"github.com/ettoma/popcorn_v2/db"
 	firestoreDB "github.com/ettoma/popcorn_v2/firestore_db"
+	"github.com/ettoma/popcorn_v2/models"
 	"github.com/ettoma/popcorn_v2/utils"
 )
 
 func HandleAddUser(w http.ResponseWriter, r *http.Request) {
-	var userToAdd *authdb.NewUser
+	var userToAdd *models.NewUser
 
 	r.Body = http.MaxBytesReader(w, r.Body, 1048576)
 
@@ -20,7 +22,7 @@ func HandleAddUser(w http.ResponseWriter, r *http.Request) {
 		utils.WriteResponse(w, "Request is malformed", false, http.StatusBadRequest)
 	}
 
-	err = authdb.AddUser(userToAdd.Email, userToAdd.Password, firestoreDB.AuthDB)
+	err = db.AddUserToDB(userToAdd.UID)
 
 	if err != nil {
 		utils.WriteResponse(w, err.Error(), false, http.StatusNotFound)

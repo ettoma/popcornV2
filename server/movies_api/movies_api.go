@@ -15,6 +15,7 @@ import (
 )
 
 func GetMovieFromId(id string) *models.MovieDetails {
+
 	var BASE_URL = os.Getenv("MOVIEDB_BASE_URL")
 
 	var start = time.Now()

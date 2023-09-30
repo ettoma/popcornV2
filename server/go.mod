@@ -5,16 +5,15 @@ go 1.20
 require (
 	cloud.google.com/go/firestore v1.11.0
 	firebase.google.com/go v3.13.0+incompatible
+	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/gorilla/mux v1.8.0
 	github.com/joho/godotenv v1.5.1
+	github.com/lib/pq v1.10.9
 	google.golang.org/api v0.131.0
 	google.golang.org/grpc v1.56.2
 )
 
-require (
-	github.com/felixge/httpsnoop v1.0.1 // indirect
-	github.com/lib/pq v1.10.9 // indirect
-)
+require github.com/felixge/httpsnoop v1.0.1 // indirect
 
 require (
 	cloud.google.com/go v0.110.6 // indirect
