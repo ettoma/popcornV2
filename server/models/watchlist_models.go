@@ -1,16 +1,19 @@
-package firestoreDB
+package models
 
 type Watchlist struct {
-	Watchlist []WatchlistItem `json:"watchlist" firebase:"watchlist"`
-}
-type WatchlistItem struct {
-	MovieID    int     `json:"movieID" firebase:"movieID"`
-	UserRating float32 `json:"userRating" firebase:"userRating"`
-	Watched    bool    `json:"watched" firebase:"watched"`
+	ID        string `json:"id"`
+	Watchlist string `json:"watchlist"`
 }
 
-type User struct {
+type WatchlistItem struct {
+	MovieID    int     `json:"movieID"`
+	UserRating float32 `json:"userRating"`
+	Watched    bool    `json:"watched"`
+}
+
+type MovieToAdd struct {
 	Username string `json:"username"`
+	MovieID  int    `json:"movieID"`
 }
 
 type MovieToRemove struct {

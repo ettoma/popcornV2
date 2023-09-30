@@ -3,6 +3,7 @@ package authdb
 import (
 	"context"
 
+	"github.com/ettoma/popcorn_v2/db"
 	"github.com/ettoma/popcorn_v2/utils"
 
 	firebase "firebase.google.com/go"
@@ -45,6 +46,14 @@ func AddUser(email, password string, client *auth.Client) error {
 		utils.Logger.Printf("error creating user: %v\n", err)
 		return err
 	}
+
+	err = db.AddUserToDB(u.UID)
+
+	if err != nil {
+		utils.Logger.Printf("error adding user to db: %v\n", err)
+		return err
+	}
+
 	utils.Logger.Printf("Successfully created user: %v\n", u)
 
 	return nil

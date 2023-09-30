@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	firestoreDB "github.com/ettoma/popcorn_v2/firestore_db"
+	"github.com/ettoma/popcorn_v2/db"
 	"github.com/ettoma/popcorn_v2/handles"
 	"github.com/ettoma/popcorn_v2/middlewares"
 	"github.com/ettoma/popcorn_v2/utils"
@@ -15,15 +15,17 @@ import (
 
 func main() {
 
-	//* load the API key from env
+	//* load the env file
 	err := godotenv.Load()
 	if err != nil {
-		utils.Logger.Fatalf("err loading: %v", err)
+		utils.Logger.Fatalf("err loading environment variables: %v", err)
 	}
 
-	err = firestoreDB.Initialise()
+	//* initialise db
+	err = db.Init()
+
 	if err != nil {
-		utils.Logger.Println(err)
+		utils.Logger.Fatalf("err loading database: %v", err)
 	}
 
 	//* initialise server
@@ -44,15 +46,17 @@ func main() {
 	}
 
 	r.HandleFunc("/", handles.HandleHome).Methods("GET")
-	//* Search handles
+	//* Movie DB search handles
 	r.HandleFunc("/query={keywords}", handles.HandleGetMoviesFromKeyword).Methods("GET")
 	r.HandleFunc("/id={id}", handles.HandleGetMovieFromId).Methods("GET")
 
+	//* User watchlist handles
 	r.HandleFunc("/user/watchlist", handles.HandleGetUserWatchlist).Methods("POST")
 	r.HandleFunc("/user/watchlist/add", handles.HandleAddMovieToWatchlist).Methods("PUT")
 	r.HandleFunc("/user/watchlist", handles.HandleRemoveMovieFromWatchlist).Methods("DELETE")
-	r.HandleFunc("/user/watchlist/rating", handles.HandleRateMovieOnWatchlist).Methods("POST")
+	r.HandleFunc("/user/watchlist/rating", handles.HandleRateMovieOnWatchlist).Methods("PUT")
 
+	//* User signup handles
 	r.HandleFunc("/users/signup", handles.HandleAddUser).Methods("POST")
 	r.HandleFunc("/users/login", handles.HandleLogIn).Methods("POST")
 

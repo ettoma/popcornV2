@@ -5,18 +5,18 @@ import 'package:http/http.dart' as http;
 import '../global/watchlist_provider.dart';
 
 class UserAPI {
-  final String baseUrlProd = 'https://popcorn-server-zfqa.onrender.com';
+  // final String baseUrlProd = 'https://popcorn-server-zfqa.onrender.com';
+  final String baseUrlProd = 'http://localhost:11111';
 
-  Future<bool> addUser(String email, String password) async {
-    var normalizedEmail = email.toLowerCase().trim();
+  Future<bool> addUser(String uid) async {
+    print("calling function with uid: $uid");
     var apiUrl = '$baseUrlProd/users/signup';
 
     try {
       var response = await http.post(
         Uri.parse(apiUrl),
         body: jsonEncode(<String, String>{
-          "email": normalizedEmail,
-          "password": password,
+          "uid": uid,
         }),
       );
 
@@ -37,6 +37,7 @@ class UserAPI {
         email: email,
         password: password,
       );
+      await addUser(FirebaseAuth.instance.currentUser!.uid);
       return true;
     } on FirebaseAuthException {
       return false;
