@@ -1,14 +1,28 @@
 package middlewares
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/ettoma/popcorn_v2/utils"
+)
 
 func TestGenerateJWT(t *testing.T) {
-	token, err := ValidateToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2OTYwNDg5NzMsInVzZXIiOiJldHRvcmV0b21hIn0._gjAnd-PjnPEy61Uwoh1EFpUHA8ECe8VYGr8KciWiIY")
+	err := GenerateJWT()
 
 	if err != nil {
 		t.Error("\ntest error: ", err)
 	} else {
-		t.Log("\ntest success: ", token)
+		t.Log("\ntest success: ", err)
 	}
 
+}
+
+func TestValidateToken(t *testing.T) {
+	isValid, err := ValidateToken(utils.TEST_TOKEN)
+
+	if err != nil {
+		t.Error("\nError validating token: ", err)
+	} else {
+		t.Log("\nToken is valid: ", isValid)
+	}
 }

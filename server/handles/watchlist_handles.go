@@ -6,14 +6,14 @@ import (
 	"net/http"
 
 	"github.com/ettoma/popcorn_v2/db"
-	firestoreDB "github.com/ettoma/popcorn_v2/firestore_db"
+	// firestoreDB "github.com/ettoma/popcorn_v2/firestore_db"
 	"github.com/ettoma/popcorn_v2/models"
 	"github.com/ettoma/popcorn_v2/utils"
 )
 
 func HandleGetUserWatchlist(w http.ResponseWriter, r *http.Request) {
 	var watchlist models.Watchlist
-	var user *firestoreDB.User
+	var user *models.ExistingUser
 
 	r.Body = http.MaxBytesReader(w, r.Body, 1048576)
 
