@@ -2,10 +2,12 @@ package handles
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"strings"
 
+	"github.com/ettoma/popcorn_v2/auth"
 	"github.com/ettoma/popcorn_v2/db"
-	// firestoreDB "github.com/ettoma/popcorn_v2/firestore_db"
 	"github.com/ettoma/popcorn_v2/models"
 	"github.com/ettoma/popcorn_v2/utils"
 )
@@ -28,28 +30,23 @@ func HandleAddUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err == nil {
-		utils.WriteResponse(w, "User created", true, http.StatusCreated)
+		tokenString, err := auth.GenerateTokenString(userToAdd.UID)
+
+		if err != nil {
+			utils.WriteResponse(w, err.Error(), false, http.StatusInternalServerError)
+			return
+		}
+		utils.WriteResponse(w, "token="+tokenString, true, http.StatusCreated)
 	}
 }
 
-// func HandleLogIn(w http.ResponseWriter, r *http.Request) {
-// 	var userToAdd *authdb.NewUser
+func HandleLogIn(w http.ResponseWriter, r *http.Request) {
 
-// 	r.Body = http.MaxBytesReader(w, r.Body, 1048576)
+	tokenObj := r.Header.Get("Authorization")
 
-// 	err := json.NewDecoder(r.Body).Decode(&userToAdd)
+	fmt.Println(r.Header)
 
-// 	if err != nil {
-// 		utils.WriteResponse(w, "Request is malformed", false, http.StatusBadRequest)
-// 	}
+	token := strings.Split(tokenObj, " ")[1]
 
-// 	err = authdb.LogIn(userToAdd.Email, userToAdd.Password, firestoreDB.AuthDB)
-
-// 	if err != nil {
-// 		utils.WriteResponse(w, err.Error(), false, http.StatusNotFound)
-// 	}
-
-// 	if err == nil {
-// 		utils.WriteResponse(w, "User logged in", true, http.StatusAccepted)
-// 	}
-// }
+	fmt.Println("token: ", token)
+}

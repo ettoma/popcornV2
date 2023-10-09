@@ -20,24 +20,6 @@ func JWTAuthMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func GenerateTokenString(username string) (string, error) {
-
-	key := []byte(os.Getenv("JWT_SECRET_KEY"))
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"exp":        jwt.NewNumericDate(time.Now().Add(time.Minute * 10)),
-		"authorized": true,
-		"user":       username,
-	})
-
-	tokenString, err := token.SignedString(key)
-	if err != nil {
-		return "", err
-	}
-	return tokenString, nil
-
-}
-
 func ValidateToken(tokenString string) (bool, error) {
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
@@ -74,22 +56,19 @@ func ValidateToken(tokenString string) (bool, error) {
 
 func GenerateJWT() error {
 
-	secret := []byte("supersecretkey")
 	t := jwt.New(jwt.SigningMethodHS256)
 
 	t.Claims = &jwt.RegisteredClaims{
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 1)),
 	}
 
-	s, err := t.SignedString(secret)
+	s, err := t.SignedString(utils.SECRET_KEY)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	// fmt.Println("signed string: ", s)
-
 	token, err := jwt.Parse(s, func(token *jwt.Token) (interface{}, error) {
-		return "oksad", nil
+		return utils.SECRET_KEY, nil
 	})
 
 	if token.Valid {

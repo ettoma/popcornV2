@@ -45,7 +45,9 @@ func main() {
 		WriteTimeout: time.Second * 15,
 	}
 
+	//* Home page
 	r.HandleFunc("/", handles.HandleHome).Methods("GET")
+
 	//* Movie DB search handles
 	r.HandleFunc("/query={keywords}", handles.HandleGetMoviesFromKeyword).Methods("GET")
 	r.HandleFunc("/id={id}", handles.HandleGetMovieFromId).Methods("GET")

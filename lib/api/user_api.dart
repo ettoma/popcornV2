@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../global/watchlist_provider.dart';
 
@@ -9,7 +10,6 @@ class UserAPI {
   final String baseUrlProd = 'http://localhost:11111';
 
   Future<bool> addUser(String uid) async {
-    print("calling function with uid: $uid");
     var apiUrl = '$baseUrlProd/users/signup';
 
     try {
@@ -21,8 +21,17 @@ class UserAPI {
       );
 
       if (response.statusCode == 201) {
+        var jsonBody = jsonDecode(response.body);
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        var token = jsonBody["message"].toString().split("=")[1];
+
+        prefs.setString('token', token);
+
         return true;
-      } else if (response.statusCode == 404) {
+      } else if (response.statusCode != 201) {
+        print(response.body);
         return false;
       }
     } catch (error) {
@@ -37,7 +46,11 @@ class UserAPI {
         email: email,
         password: password,
       );
-      await addUser(FirebaseAuth.instance.currentUser!.uid);
+      var success = await addUser(FirebaseAuth.instance.currentUser!.uid);
+
+      if (!success) {
+        return false;
+      }
       return true;
     } on FirebaseAuthException {
       return false;
@@ -45,10 +58,20 @@ class UserAPI {
   }
 
   Future<bool> signInWithEmailPassword(String email, String password) async {
+    var apiUrl = '$baseUrlProd/users/login';
+
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
+      );
+
+      var response = await http.post(
+        Uri.parse(apiUrl),
+        headers: Map<String, String>.from({"Authorization": "Bearer 123456"}),
+        body: jsonEncode(<String, String>{
+          "uid": "uid",
+        }),
       );
       WatchlistProvider().getWatchlistForUser();
       return true;
