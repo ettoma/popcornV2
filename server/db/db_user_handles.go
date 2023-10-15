@@ -15,7 +15,9 @@ func checkIfUserExists(uuid string) error {
 
 	rowsAffected, _ := r.RowsAffected()
 
-	fmt.Print(rowsAffected)
+	if rowsAffected == 0 {
+		fmt.Println("This is a new user")
+	}
 	if rowsAffected != 0 {
 		return errors.New("User already exists")
 	}
@@ -39,6 +41,7 @@ func AddUserToDB(username string) error {
 		return err
 	}
 
-	fmt.Println("rows affected", res)
+	insertId, _ := res.LastInsertId()
+	fmt.Println("Created user", insertId)
 	return nil
 }
