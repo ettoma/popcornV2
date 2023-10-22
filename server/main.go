@@ -34,6 +34,9 @@ func main() {
 
 	r.Use(middlewares.LoggingMiddleware)
 
+	authSubrouter := r.PathPrefix("/users").Subrouter()
+	authSubrouter.Use(middlewares.JWTAuthMiddleware)
+
 	srv := &http.Server{
 		Addr: PORT,
 		Handler: handlers.CORS(
@@ -59,8 +62,8 @@ func main() {
 	r.HandleFunc("/user/watchlist/rating", handles.HandleRateMovieOnWatchlist).Methods("PUT")
 
 	//* User signup handles
+	authSubrouter.HandleFunc("/login", handles.HandleLogIn).Methods("POST")
 	r.HandleFunc("/users/signup", handles.HandleAddUser).Methods("POST")
-	r.HandleFunc("/users/login", handles.HandleLogIn).Methods("POST")
 
 	utils.Logger.Printf("Server started at: http://localhost%s \n", PORT)
 

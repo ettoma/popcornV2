@@ -2,9 +2,7 @@ package handles
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
-	"strings"
 
 	"github.com/ettoma/popcorn_v2/auth"
 	"github.com/ettoma/popcorn_v2/db"
@@ -41,12 +39,5 @@ func HandleAddUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleLogIn(w http.ResponseWriter, r *http.Request) {
-
-	tokenObj := r.Header.Get("Authorization")
-
-	fmt.Println(r.Header)
-
-	token := strings.Split(tokenObj, " ")[1]
-
-	fmt.Println("token: ", token)
+	utils.WriteResponse(w, "log in", true, http.StatusOK)
 }

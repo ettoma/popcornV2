@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"os"
+	"strings"
 	"time"
 
 	"github.com/ettoma/popcorn_v2/utils"
@@ -14,8 +14,25 @@ import (
 
 func JWTAuthMiddleware(next http.Handler) http.Handler {
 
-	jwt.New(jwt.SigningMethodES256)
+	fmt.Println("using jwt middleware")
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		tokenObj := r.Header.Get("Authorization")
+
+		token := strings.Split(tokenObj, " ")[1]
+
+		isValid, err := ValidateToken(token)
+
+		if err != nil {
+			utils.WriteResponse(w, err.Error(), false, http.StatusUnauthorized)
+			return
+		}
+
+		if !isValid {
+			utils.WriteResponse(w, "invalid token", false, http.StatusUnauthorized)
+			return
+		}
 		next.ServeHTTP(w, r)
 	})
 }
@@ -27,7 +44,8 @@ func ValidateToken(tokenString string) (bool, error) {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 
-		key := []byte(os.Getenv("JWT_SECRET_KEY"))
+		key := utils.JWT_SECRET_KEY
+		// key := []byte(os.Getenv("JWT_SECRET_KEY"))
 		return key, nil
 	})
 
@@ -66,6 +84,8 @@ func GenerateJWT() error {
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	fmt.Println("token: ", s)
 
 	token, err := jwt.Parse(s, func(token *jwt.Token) (interface{}, error) {
 		return utils.SECRET_KEY, nil

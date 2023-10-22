@@ -8,7 +8,7 @@ import (
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/auth"
-	authdb "github.com/ettoma/popcorn_v2/auth_db"
+	authdb "github.com/ettoma/popcorn_v2/OLD/auth_db"
 	"github.com/ettoma/popcorn_v2/utils"
 	"google.golang.org/api/option"
 	"google.golang.org/grpc/codes"

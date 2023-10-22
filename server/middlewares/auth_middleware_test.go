@@ -12,7 +12,7 @@ func TestGenerateJWT(t *testing.T) {
 	if err != nil {
 		t.Error("\ntest error: ", err)
 	} else {
-		t.Log("\ntest success: ", err)
+		t.Log("\ntest success: no error")
 	}
 
 }
