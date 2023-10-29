@@ -1,6 +1,6 @@
 # popcorn
 
-A watchlist tracker in Flutter with Golang backend + Firebase
+A watchlist tracker in Flutter with Golang backend
 
 ## What does it do
 
@@ -12,4 +12,5 @@ A watchlist tracker in Flutter with Golang backend + Firebase
 
 Flutter + Dart
 Golang REST API
-Firebase Firestore DB + Login functionality
+Postgres database
+Firebase authentication
